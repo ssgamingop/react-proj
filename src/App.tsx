@@ -4,6 +4,7 @@ import { NewsWidget } from './components/NewsWidget';
 import { WatchlistWidget } from './components/WatchlistWidget';
 import { PortfolioDashboard } from './components/PortfolioDashboard';
 import { PriceChart } from './components/PriceChart';
+import { AlertsWidget } from './components/AlertsWidget';
 import { Toaster } from 'react-hot-toast';
 
 function App() {
@@ -28,6 +29,9 @@ function App() {
           <div className="flex flex-col gap-6">
             <aside>
               <WatchlistWidget />
+            </aside>
+            <aside>
+              <AlertsWidget />
             </aside>
             <aside>
               <NewsWidget />
