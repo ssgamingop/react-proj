@@ -30,7 +30,7 @@ export const PortfolioDashboard: React.FC = () => {
       } catch (error) {
         console.error("Failed to fetch portfolio prices", error);
       } finally {
-        setLoading(false);
+        
       }
     };
 
