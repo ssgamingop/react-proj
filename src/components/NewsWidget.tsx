@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { cryptoApi } from '../services/api';
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, RefreshCw } from 'lucide-react';
 
 interface NewsArticle {
   id: string;
@@ -15,45 +15,69 @@ interface NewsArticle {
 export const NewsWidget: React.FC = () => {
   const [news, setNews] = useState<NewsArticle[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchNews = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await cryptoApi.getNews();
+      if (data && data.Data) {
+        setNews(data.Data.slice(0, 5));
+      } else {
+        setError("No news data received");
+      }
+    } catch (error) {
+      console.error("Failed to fetch news", error);
+      setError("Failed to load news");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchNews = async () => {
-      try {
-        setLoading(true);
-        const data = await cryptoApi.getNews();
-        if (data && data.Data) {
-          setNews(data.Data.slice(0, 5));
-        }
-      } catch (error) {
-        console.error("Failed to fetch news", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchNews();
   }, []);
 
   return (
     <div className="bg-slate-900 border border-slate-800 rounded-2xl shadow-sm p-6">
-      <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-        <div className="bg-primary/10 p-1.5 rounded-lg">
-          <ExternalLink className="w-5 h-5 text-primary" />
-        </div>
-        Latest News
-      </h2>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-xl font-bold text-white flex items-center gap-2">
+          <div className="bg-primary/10 p-1.5 rounded-lg">
+            <ExternalLink className="w-5 h-5 text-primary" />
+          </div>
+          Latest News
+        </h2>
+        <button 
+          onClick={fetchNews}
+          className="p-2 text-slate-500 hover:text-white transition-colors"
+          disabled={loading}
+        >
+          <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+        </button>
+      </div>
       
       {loading ? (
         <div className="space-y-4">
           {[1, 2, 3].map(i => (
             <div key={i} className="flex gap-4 animate-pulse">
-              <div className="w-20 h-20 bg-slate-800 rounded-xl"></div>
+              <div className="w-20 h-20 bg-slate-800 rounded-xl shrink-0"></div>
               <div className="flex-1 space-y-2 py-1">
                 <div className="h-3 bg-slate-800 rounded w-3/4"></div>
                 <div className="h-3 bg-slate-800 rounded w-1/2"></div>
               </div>
             </div>
           ))}
+        </div>
+      ) : error ? (
+        <div className="text-center py-8">
+          <p className="text-slate-500 text-sm">{error}</p>
+          <button 
+            onClick={fetchNews}
+            className="mt-4 text-xs font-bold text-primary uppercase tracking-widest"
+          >
+            Try Again
+          </button>
         </div>
       ) : (
         <div className="space-y-4">
@@ -70,6 +94,10 @@ export const NewsWidget: React.FC = () => {
                   src={article.imageurl} 
                   alt={article.title} 
                   className="w-20 h-20 object-cover rounded-xl bg-slate-800"
+                  onError={(e) => {
+                    // Fallback if image fails to load
+                    (e.target as HTMLImageElement).src = 'https://via.placeholder.com/80?text=News';
+                  }}
                 />
                 <div className="absolute inset-0 rounded-xl shadow-inner shadow-white/5"></div>
               </div>
