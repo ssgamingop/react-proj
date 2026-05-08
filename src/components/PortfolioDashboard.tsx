@@ -135,15 +135,15 @@ export const PortfolioDashboard: React.FC = () => {
               Your Assets
             </h3>
           </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
+          <div className="table-container">
+            <table className="w-full text-left text-sm border-collapse min-w-[500px]">
               <thead className="text-xs uppercase text-slate-500 bg-slate-800/30">
                 <tr>
-                  <th className="px-6 py-4 font-semibold">Asset</th>
-                  <th className="px-6 py-4 font-semibold text-right">Balance</th>
-                  <th className="px-6 py-4 font-semibold text-right">Price</th>
-                  <th className="px-6 py-4 font-semibold text-right">Avg. Buy</th>
-                  <th className="px-6 py-4 font-semibold text-right">P/L</th>
+                  <th className="px-6 py-4 font-semibold whitespace-nowrap">Asset</th>
+                  <th className="px-6 py-4 font-semibold text-right whitespace-nowrap">Balance</th>
+                  <th className="px-6 py-4 font-semibold text-right whitespace-nowrap">Price</th>
+                  <th className="px-6 py-4 font-semibold text-right whitespace-nowrap">Avg. Buy</th>
+                  <th className="px-6 py-4 font-semibold text-right whitespace-nowrap">P/L</th>
                   <th className="px-6 py-4"></th>
                 </tr>
               </thead>
@@ -165,28 +165,28 @@ export const PortfolioDashboard: React.FC = () => {
 
                     return (
                       <tr key={asset.id} className="group hover:bg-white/[0.02] transition-colors">
-                        <td className="px-6 py-4">
+                        <td className="px-6 py-4 whitespace-nowrap">
                           <div className="font-bold text-white">{asset.coinSymbol}</div>
                         </td>
-                        <td className="px-6 py-4 text-right">
+                        <td className="px-6 py-4 text-right whitespace-nowrap">
                           <div className="font-medium text-white">${val.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
-                          <div className="text-xs text-slate-500">{asset.amount} {asset.coinSymbol}</div>
+                          <div className="text-[10px] text-slate-500 font-bold uppercase tracking-tight">{asset.amount} {asset.coinSymbol}</div>
                         </td>
-                        <td className="px-6 py-4 text-right text-slate-300">
+                        <td className="px-6 py-4 text-right text-slate-300 whitespace-nowrap font-medium">
                           {currentPrice ? `$${currentPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 })}` : '—'}
                         </td>
-                        <td className="px-6 py-4 text-right text-slate-400">
+                        <td className="px-6 py-4 text-right text-slate-400 whitespace-nowrap font-medium">
                           ${asset.buyPrice.toLocaleString()}
                         </td>
-                        <td className={`px-6 py-4 text-right font-bold ${isAssetProfit ? 'text-emerald-400' : 'text-rose-400'}`}>
+                        <td className={`px-6 py-4 text-right font-bold whitespace-nowrap ${isAssetProfit ? 'text-emerald-400' : 'text-rose-400'}`}>
                           <div className="flex flex-col items-end">
                             <span>{isAssetProfit ? '+' : ''}{profitPct.toFixed(2)}%</span>
-                            <span className="text-xs opacity-70 font-medium">
+                            <span className="text-[10px] opacity-70 font-bold uppercase tracking-tighter">
                               {isAssetProfit ? '+' : ''}${Math.abs(profit).toLocaleString(undefined, { maximumFractionDigits: 0 })}
                             </span>
                           </div>
                         </td>
-                        <td className="px-6 py-4 text-right">
+                        <td className="px-6 py-4 text-right whitespace-nowrap">
                           <button 
                             onClick={() => removeAsset(asset.id)}
                             className="text-slate-600 hover:text-rose-500 transition-colors p-2"
