@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { cryptoApi } from '../services/api';
-import { ExternalLink, RefreshCw } from 'lucide-react';
+import { RefreshCw, Newspaper } from 'lucide-react';
 
 interface NewsArticle {
-  id: string;
   title: string;
-  url: string;
-  source: string;
-  imageurl: string;
-  body: string;
-  published_on: number;
+  link: string;
+  pubDate: string;
+  description: string;
+  enclosure?: {
+    link: string;
+  };
+  source?: string;
 }
 
 export const NewsWidget: React.FC = () => {
@@ -21,15 +21,28 @@ export const NewsWidget: React.FC = () => {
     try {
       setLoading(true);
       setError(null);
-      const data = await cryptoApi.getNews();
-      if (data && data.Data) {
-        setNews(data.Data.slice(0, 5));
+      
+      // Using CoinDesk RSS feed via rss2json service (reliable and keyless for public feeds)
+      const response = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https://www.coindesk.com/arc/outboundfeeds/rss/');
+      const data = await response.json();
+      
+      if (data && data.status === 'ok' && Array.isArray(data.items)) {
+        // Map to our structure
+        const articles = data.items.slice(0, 5).map((item: any) => ({
+          title: item.title,
+          link: item.link,
+          pubDate: item.pubDate,
+          description: item.description,
+          enclosure: item.enclosure?.link ? { link: item.enclosure.link } : undefined,
+          source: 'CoinDesk'
+        }));
+        setNews(articles);
       } else {
-        setError("No news data received");
+        setError("No news articles available.");
       }
     } catch (error) {
       console.error("Failed to fetch news", error);
-      setError("Failed to load news");
+      setError("News service unavailable.");
     } finally {
       setLoading(false);
     }
@@ -40,81 +53,86 @@ export const NewsWidget: React.FC = () => {
   }, []);
 
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-2xl shadow-sm p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-bold text-white flex items-center gap-2">
-          <div className="bg-primary/10 p-1.5 rounded-lg">
-            <ExternalLink className="w-5 h-5 text-primary" />
+    <div className="bg-slate-900 border border-slate-800 rounded-2xl shadow-sm p-6 overflow-hidden h-full flex flex-col">
+      <div className="flex justify-between items-center mb-6 shrink-0">
+        <h2 className="text-xl font-bold text-white flex items-center gap-2 whitespace-nowrap">
+          <div className="bg-primary/10 p-1.5 rounded-lg shrink-0">
+            <Newspaper className="w-5 h-5 text-primary" />
           </div>
-          Latest News
+          Crypto News
         </h2>
         <button 
           onClick={fetchNews}
-          className="p-2 text-slate-500 hover:text-white transition-colors"
+          className="p-2 text-slate-500 hover:text-white transition-colors shrink-0"
           disabled={loading}
         >
           <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
         </button>
       </div>
       
-      {loading ? (
-        <div className="space-y-4">
-          {[1, 2, 3].map(i => (
-            <div key={i} className="flex gap-4 animate-pulse">
-              <div className="w-20 h-20 bg-slate-800 rounded-xl shrink-0"></div>
-              <div className="flex-1 space-y-2 py-1">
-                <div className="h-3 bg-slate-800 rounded w-3/4"></div>
-                <div className="h-3 bg-slate-800 rounded w-1/2"></div>
-              </div>
-            </div>
-          ))}
-        </div>
-      ) : error ? (
-        <div className="text-center py-8">
-          <p className="text-slate-500 text-sm">{error}</p>
-          <button 
-            onClick={fetchNews}
-            className="mt-4 text-xs font-bold text-primary uppercase tracking-widest"
-          >
-            Try Again
-          </button>
-        </div>
-      ) : (
-        <div className="space-y-4">
-          {news.map((article) => (
-            <a 
-              key={article.id} 
-              href={article.url} 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex gap-4 group p-2 -m-2 rounded-2xl hover:bg-white/[0.03] transition-all"
-            >
-              <div className="relative shrink-0">
-                <img 
-                  src={article.imageurl} 
-                  alt={article.title} 
-                  className="w-20 h-20 object-cover rounded-xl bg-slate-800"
-                  onError={(e) => {
-                    // Fallback if image fails to load
-                    (e.target as HTMLImageElement).src = 'https://via.placeholder.com/80?text=News';
-                  }}
-                />
-                <div className="absolute inset-0 rounded-xl shadow-inner shadow-white/5"></div>
-              </div>
-              <div className="flex flex-col justify-between py-0.5">
-                <h3 className="text-sm font-bold text-slate-200 line-clamp-2 leading-snug group-hover:text-primary transition-colors">
-                  {article.title}
-                </h3>
-                <div className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-widest text-slate-500">
-                  <span className="text-slate-400">{article.source}</span>
-                  <span className="w-1 h-1 bg-slate-700 rounded-full"></span>
-                  <span>{new Date(article.published_on * 1000).toLocaleDateString()}</span>
+      <div className="flex-1 overflow-y-auto pr-1 -mr-1 space-y-4">
+        {loading ? (
+          <div className="space-y-4">
+            {[1, 2, 3, 4].map(i => (
+              <div key={i} className="flex gap-4 animate-pulse">
+                <div className="w-16 h-16 bg-slate-800 rounded-xl shrink-0"></div>
+                <div className="flex-1 space-y-2 py-1 min-w-0">
+                  <div className="h-3 bg-slate-800 rounded w-3/4"></div>
+                  <div className="h-3 bg-slate-800 rounded w-1/2"></div>
                 </div>
               </div>
-            </a>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        ) : error ? (
+          <div className="text-center py-12 flex flex-col items-center justify-center h-full">
+            <Newspaper className="w-10 h-10 text-slate-800 mb-4" />
+            <p className="text-slate-500 text-xs font-bold uppercase tracking-widest px-4">{error}</p>
+            <button 
+              onClick={fetchNews}
+              className="mt-6 text-[10px] font-bold text-primary uppercase tracking-widest hover:bg-primary/10 border border-primary/20 px-4 py-2 rounded-full transition-all"
+            >
+              Retry Connection
+            </button>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {news.map((article, index) => (
+              <a 
+                key={index} 
+                href={article.link} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex gap-4 group p-2 -m-2 rounded-2xl hover:bg-white/[0.03] transition-all min-w-0"
+              >
+                <div className="relative shrink-0">
+                  {article.enclosure?.link ? (
+                    <img 
+                      src={article.enclosure.link} 
+                      alt="" 
+                      className="w-16 h-16 object-cover rounded-xl bg-slate-800 shadow-sm"
+                    />
+                  ) : (
+                    <div className="w-16 h-16 bg-slate-800 rounded-xl flex items-center justify-center">
+                      <Newspaper className="w-6 h-6 text-slate-700" />
+                    </div>
+                  )}
+                  <div className="absolute inset-0 rounded-xl shadow-inner shadow-white/5"></div>
+                </div>
+                <div className="flex flex-col justify-between py-0.5 min-w-0 flex-1">
+                  <h3 className="text-xs font-bold text-slate-200 line-clamp-2 leading-snug group-hover:text-primary transition-colors pr-2">
+                    {article.title}
+                  </h3>
+                  <div className="flex items-center gap-2 text-[9px] font-bold uppercase tracking-widest text-slate-500 mt-2 truncate">
+                    <span className="text-primary truncate">{article.source}</span>
+                    <span className="w-1 h-1 bg-slate-700 rounded-full shrink-0"></span>
+                    <span className="shrink-0">{new Date(article.pubDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</span>
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
