@@ -54,69 +54,95 @@ export const MarketTable: React.FC = () => {
   }, []);
 
   if (loading) {
-    return <div className="p-4 text-center">Loading market data...</div>;
+    return (
+      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-12 text-center text-slate-500 font-medium animate-pulse">
+        Fetching live market data...
+      </div>
+    );
   }
 
   return (
-    <div className="overflow-x-auto bg-slate-800 rounded-lg shadow-lg">
-      <table className="w-full text-left text-sm text-slate-300">
-        <thead className="bg-slate-700/50 text-xs uppercase">
-          <tr>
-            <th className="px-4 py-3">#</th>
-            <th className="px-4 py-3">Coin</th>
-            <th className="px-4 py-3">Price</th>
-            <th className="px-4 py-3">24h Change</th>
-            <th className="px-4 py-3">Market Cap</th>
-            <th className="px-4 py-3">Volume (24h)</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-slate-700">
-          {coins.map((coin, index) => {
-            const isFavorite = favorites.includes(coin.CoinInfo.Name);
-            const price = coin.DISPLAY?.USD?.PRICE || '$0.00';
-            const rawChange = coin.RAW?.USD?.CHANGEPCT24HOUR || 0;
-            const changeStr = coin.DISPLAY?.USD?.CHANGEPCT24HOUR || '0.00';
-            const mktCap = coin.DISPLAY?.USD?.MKTCAP || '$0.00';
-            const volume = coin.DISPLAY?.USD?.VOLUME24HOURTO || '$0.00';
-            const isPositive = rawChange >= 0;
+    <div className="overflow-hidden bg-slate-900 border border-slate-800 rounded-2xl shadow-sm">
+      <div className="overflow-x-auto">
+        <table className="w-full text-left text-sm border-collapse">
+          <thead className="bg-slate-800/40 text-xs font-bold uppercase tracking-wider text-slate-500 border-b border-slate-800">
+            <tr>
+              <th className="px-6 py-4 w-12 text-center"></th>
+              <th className="px-6 py-4 w-12 text-center">#</th>
+              <th className="px-6 py-4">Coin</th>
+              <th className="px-6 py-4 text-right">Price</th>
+              <th className="px-6 py-4 text-right">24h Change</th>
+              <th className="px-6 py-4 text-right hidden lg:table-cell">Market Cap</th>
+              <th className="px-6 py-4 text-right hidden xl:table-cell">Volume (24h)</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-slate-800">
+            {coins.map((coin, index) => {
+              const isFavorite = favorites.includes(coin.CoinInfo.Name);
+              const price = coin.DISPLAY?.USD?.PRICE || '$0.00';
+              const rawChange = coin.RAW?.USD?.CHANGEPCT24HOUR || 0;
+              const changeStr = coin.DISPLAY?.USD?.CHANGEPCT24HOUR || '0.00';
+              const mktCap = coin.DISPLAY?.USD?.MKTCAP || '$0.00';
+              const volume = coin.DISPLAY?.USD?.VOLUME24HOURTO || '$0.00';
+              const isPositive = rawChange >= 0;
 
-            return (
-              <tr key={coin.CoinInfo.Id} className="hover:bg-slate-700/30 transition-colors">
-                <td className="px-4 py-3">
-                  <button 
-                    onClick={() => toggleFavorite(coin.CoinInfo.Name)}
-                    className="focus:outline-none flex items-center justify-center w-6 h-6"
-                  >
-                    {isFavorite ? (
-                      <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
-                    ) : (
-                      <StarOff className="w-5 h-5 text-slate-500 hover:text-slate-300" />
-                    )}
-                  </button>
-                </td>
-                <td className="px-4 py-3 flex items-center gap-3">
-                  <span className="w-6 text-slate-500">{index + 1}</span>
-                  <img 
-                    src={`https://www.cryptocompare.com${coin.CoinInfo.ImageUrl}`} 
-                    alt={coin.CoinInfo.Name} 
-                    className="w-8 h-8 rounded-full"
-                  />
-                  <div className="flex flex-col">
-                    <span className="font-bold text-white">{coin.CoinInfo.FullName}</span>
-                    <span className="text-xs text-slate-400">{coin.CoinInfo.Name}</span>
-                  </div>
-                </td>
-                <td className="px-4 py-3 font-medium">{price}</td>
-                <td className={`px-4 py-3 font-medium ${isPositive ? 'text-emerald-400' : 'text-rose-400'}`}>
-                  {isPositive ? '+' : ''}{changeStr}%
-                </td>
-                <td className="px-4 py-3 text-slate-300">{mktCap}</td>
-                <td className="px-4 py-3 text-slate-400">{volume}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+              return (
+                <tr key={coin.CoinInfo.Id} className="group hover:bg-white/[0.02] transition-all cursor-pointer">
+                  <td className="px-6 py-4 text-center">
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleFavorite(coin.CoinInfo.Name);
+                      }}
+                      className="focus:outline-none transition-transform hover:scale-110 active:scale-95"
+                    >
+                      {isFavorite ? (
+                        <Star className="w-4 h-4 text-yellow-500 fill-yellow-500 shadow-sm" />
+                      ) : (
+                        <Star className="w-4 h-4 text-slate-600 hover:text-slate-400" />
+                      )}
+                    </button>
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    <span className="font-mono text-slate-500">{index + 1}</span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-3">
+                      <div className="relative">
+                        <img 
+                          src={`https://www.cryptocompare.com${coin.CoinInfo.ImageUrl}`} 
+                          alt={coin.CoinInfo.Name} 
+                          className="w-8 h-8 rounded-full bg-slate-800 p-0.5"
+                        />
+                        <div className="absolute inset-0 rounded-full shadow-inner shadow-white/10"></div>
+                      </div>
+                      <div className="flex flex-col min-w-0">
+                        <span className="font-bold text-white truncate">{coin.CoinInfo.FullName}</span>
+                        <span className="text-xs text-slate-500 font-medium uppercase tracking-tighter">{coin.CoinInfo.Name}</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 text-right">
+                    <span className="font-bold text-slate-200">{price}</span>
+                  </td>
+                  <td className="px-6 py-4 text-right font-bold">
+                    <div className={`inline-flex items-center gap-1 ${isPositive ? 'text-emerald-400' : 'text-rose-400'}`}>
+                      {isPositive ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
+                      <span>{Math.abs(parseFloat(changeStr)).toFixed(2)}%</span>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 text-right text-slate-400 hidden lg:table-cell font-medium">
+                    {mktCap}
+                  </td>
+                  <td className="px-6 py-4 text-right text-slate-500 hidden xl:table-cell font-mono text-xs">
+                    {volume}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
