@@ -24,7 +24,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
               Chain<span className="text-primary">Pulse</span>
             </h1>
           </div>
-          <nav className="hidden md:flex gap-8">
+          <nav className="hidden md:flex gap-4 lg:gap-8">
             {[
               { label: 'Dashboard', id: 'dashboard' },
               { label: 'Portfolio', id: 'portfolio' },
@@ -34,7 +34,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
               <button 
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className="text-sm font-medium text-slate-400 hover:text-white transition-colors relative group"
+                className="text-xs lg:text-sm font-bold text-slate-400 hover:text-white transition-colors relative group uppercase tracking-widest"
               >
                 {item.label}
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>

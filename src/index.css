@@ -14,3 +14,31 @@ body {
 .glow {
   box-shadow: 0 0 20px -5px var(--color-primary);
 }
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-800 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-700;
+}
+
+/* Layout Utilities */
+.no-wrap-cell {
+  @apply whitespace-nowrap overflow-hidden text-ellipsis;
+}
+
+.table-container {
+  @apply overflow-x-auto overflow-y-hidden;
+  -webkit-overflow-scrolling: touch;
+}
