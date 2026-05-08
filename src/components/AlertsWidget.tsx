@@ -31,10 +31,10 @@ export const AlertsWidget: React.FC = () => {
 
             if (triggered) {
               toast.success(
-                `${alert.coinSymbol} has gone ${alert.condition} $${alert.targetPrice}! (Current: $${currentPrice})`,
+                `${alert.coinSymbol} has gone ${alert.condition} $${alert.targetPrice}!`,
                 { duration: 6000, icon: '🔔' }
               );
-              toggleAlertActive(alert.id); // Deactivate after triggering
+              toggleAlertActive(alert.id);
             }
           });
         }
@@ -43,7 +43,7 @@ export const AlertsWidget: React.FC = () => {
       }
     };
 
-    const interval = setInterval(checkAlerts, 20000); // Check every 20 seconds
+    const interval = setInterval(checkAlerts, 20000);
     return () => clearInterval(interval);
   }, [alerts, toggleAlertActive]);
 
@@ -62,73 +62,92 @@ export const AlertsWidget: React.FC = () => {
   };
 
   return (
-    <div className="bg-slate-800 rounded-lg shadow-lg p-4">
-      <div className="flex justify-between items-center mb-4">
+    <div className="bg-slate-900 border border-slate-800 rounded-2xl shadow-sm p-6">
+      <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-bold text-white flex items-center gap-2">
-          <Bell className="w-5 h-5 text-primary" /> Alerts
+          <div className="bg-emerald-400/10 p-1.5 rounded-lg">
+            <Bell className="w-5 h-5 text-emerald-400" />
+          </div>
+          Price Alerts
         </h2>
         <button 
           onClick={() => setIsAdding(!isAdding)}
-          className="text-slate-400 hover:text-white transition-colors"
+          className="bg-white/5 hover:bg-white/10 p-2 rounded-xl border border-white/5 text-slate-400 hover:text-white transition-all shadow-sm"
         >
-          <Plus className="w-5 h-5" />
+          <Plus className="w-4 h-4" />
         </button>
       </div>
 
       {isAdding && (
-        <form onSubmit={handleAdd} className="bg-slate-700/30 p-3 rounded-lg border border-slate-600 mb-4 text-sm">
-          <div className="grid grid-cols-2 gap-2 mb-2">
-            <input
-              type="text"
-              placeholder="Coin (e.g. BTC)"
-              value={newSymbol}
-              onChange={e => setNewSymbol(e.target.value)}
-              className="bg-slate-900 border border-slate-700 rounded px-2 py-1.5 text-white w-full"
-              required
-            />
-            <input
-              type="number"
-              placeholder="Price ($)"
-              step="any"
-              value={newPrice}
-              onChange={e => setNewPrice(e.target.value)}
-              className="bg-slate-900 border border-slate-700 rounded px-2 py-1.5 text-white w-full"
-              required
-            />
+        <form onSubmit={handleAdd} className="bg-slate-950 border border-slate-800 p-4 rounded-xl mb-6 space-y-4 shadow-inner">
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-1.5">
+              <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest ml-1">Symbol</label>
+              <input
+                type="text"
+                placeholder="BTC"
+                value={newSymbol}
+                onChange={e => setNewSymbol(e.target.value)}
+                className="bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-white w-full outline-none focus:border-primary transition-colors text-sm font-bold"
+                required
+              />
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest ml-1">Target ($)</label>
+              <input
+                type="number"
+                placeholder="0.00"
+                step="any"
+                value={newPrice}
+                onChange={e => setNewPrice(e.target.value)}
+                className="bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-white w-full outline-none focus:border-primary transition-colors text-sm font-bold"
+                required
+              />
+            </div>
           </div>
-          <div className="flex gap-2 items-center">
+          <div className="flex gap-2">
             <select
               value={newCondition}
               onChange={e => setNewCondition(e.target.value as 'above' | 'below')}
-              className="bg-slate-900 border border-slate-700 rounded px-2 py-1.5 text-white flex-1"
+              className="bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-white flex-1 outline-none text-xs font-bold appearance-none cursor-pointer"
             >
-              <option value="above">Goes Above</option>
-              <option value="below">Goes Below</option>
+              <option value="above">Above Target</option>
+              <option value="below">Below Target</option>
             </select>
-            <button type="submit" className="bg-primary hover:bg-primary/90 text-white px-3 py-1.5 rounded transition-colors">
-              Add
+            <button type="submit" className="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg font-bold text-xs transition-all shadow-lg shadow-primary/20">
+              Create
             </button>
           </div>
         </form>
       )}
 
       {alerts.length === 0 ? (
-        <div className="text-center text-slate-500 py-4 text-sm">
-          No active alerts.
+        <div className="text-center py-6 px-4 border-2 border-dashed border-slate-800 rounded-xl">
+          <p className="text-slate-600 text-xs font-bold uppercase tracking-widest">No Active Alerts</p>
         </div>
       ) : (
-        <div className="flex flex-col gap-2">
+        <div className="space-y-2">
           {alerts.map(alert => (
-            <div key={alert.id} className="flex items-center justify-between p-2 bg-slate-700/30 rounded border border-slate-700/50 text-sm">
-              <div className="flex items-center gap-2">
-                <button onClick={() => toggleAlertActive(alert.id)} className={`${alert.isActive ? 'text-emerald-400' : 'text-slate-500'}`}>
-                  {alert.isActive ? <BellRing className="w-4 h-4" /> : <Bell className="w-4 h-4" />}
+            <div key={alert.id} className="group flex items-center justify-between p-3 bg-slate-950 border border-slate-800 rounded-xl hover:border-slate-700 transition-all">
+              <div className="flex items-center gap-3">
+                <button 
+                  onClick={() => toggleAlertActive(alert.id)} 
+                  className={`p-1 rounded-lg transition-colors ${alert.isActive ? 'bg-emerald-400/10 text-emerald-400' : 'bg-slate-800 text-slate-600'}`}
+                >
+                  {alert.isActive ? <BellRing className="w-3.5 h-3.5" /> : <Bell className="w-3.5 h-3.5" />}
                 </button>
-                <span className="font-bold text-white">{alert.coinSymbol}</span>
-                <span className="text-slate-400">{alert.condition === 'above' ? '>' : '<'} ${alert.targetPrice.toLocaleString()}</span>
+                <div className="flex flex-col">
+                  <span className="font-bold text-white text-xs leading-none">{alert.coinSymbol}</span>
+                  <span className="text-[10px] text-slate-500 font-bold uppercase tracking-tighter mt-1">
+                    {alert.condition === 'above' ? 'Higher than' : 'Lower than'} ${alert.targetPrice.toLocaleString()}
+                  </span>
+                </div>
               </div>
-              <button onClick={() => removeAlert(alert.id)} className="text-slate-500 hover:text-rose-400">
-                <Trash2 className="w-4 h-4" />
+              <button 
+                onClick={() => removeAlert(alert.id)} 
+                className="p-1.5 text-slate-700 hover:text-rose-500 opacity-0 group-hover:opacity-100 transition-all"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
               </button>
             </div>
           ))}
