@@ -7,8 +7,8 @@ const api = axios.create({
 });
 
 export const cryptoApi = {
-  getTopCoins: async (limit = 100) => {
-    const response = await api.get(`/top/mktcapfull?limit=${limit}&tsym=USD`);
+  getTopCoins: async (limit = 100, page = 0) => {
+    const response = await api.get(`/top/mktcapfull?limit=${limit}&tsym=USD&page=${page}`);
     return response.data;
   },
   
