@@ -37,43 +37,47 @@ export const WatchlistWidget: React.FC = () => {
     fetchFavoritePrices();
   }, [favorites]);
 
-  if (favorites.length === 0) {
-    return (
-      <div className="bg-slate-800 rounded-lg shadow-lg p-4 text-center text-slate-400">
-        <p>Your watchlist is empty.</p>
-        <p className="text-sm mt-2">Click the star icon in the market table to add coins.</p>
-      </div>
-    );
-  }
-
   return (
-    <div className="bg-slate-800 rounded-lg shadow-lg p-4">
-      <h2 className="text-xl font-bold text-white mb-4">Watchlist</h2>
-      {loading && Object.keys(prices).length === 0 ? (
-        <div className="text-center text-slate-400">Loading prices...</div>
+    <div className="bg-slate-900 border border-slate-800 rounded-2xl shadow-sm p-6">
+      <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+        <Star className="w-5 h-5 text-primary fill-primary/20" />
+        Watchlist
+      </h2>
+      
+      {favorites.length === 0 ? (
+        <div className="text-center py-8 px-4 border-2 border-dashed border-slate-800 rounded-xl">
+          <p className="text-slate-500 text-sm font-medium">Your watchlist is empty</p>
+          <p className="text-xs text-slate-600 mt-2">Star coins in the market table to track them here</p>
+        </div>
       ) : (
-        <div className="flex flex-col gap-3">
+        <div className="space-y-3">
           {favorites.map((symbol) => {
             const priceData = prices[symbol];
-            const price = priceData ? `$${priceData.PRICE.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 })}` : '---';
+            const price = priceData ? `$${priceData.PRICE.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '---';
             const change = priceData ? priceData.CHANGEPCT24HOUR : 0;
             const isPositive = change >= 0;
 
             return (
-              <div key={symbol} className="flex items-center justify-between p-3 bg-slate-700/30 rounded-lg border border-slate-700/50">
+              <div key={symbol} className="group flex items-center justify-between p-4 bg-slate-950 border border-slate-800 rounded-xl hover:border-slate-700 transition-all">
                 <div className="flex items-center gap-3">
-                  <span className="font-bold text-white">{symbol}</span>
+                  <div className="bg-slate-900 w-10 h-10 rounded-lg flex items-center justify-center font-bold text-white shadow-inner">
+                    {symbol.charAt(0)}
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="font-bold text-white leading-tight">{symbol}</span>
+                    <span className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-0.5">Crypto</span>
+                  </div>
                 </div>
                 <div className="flex items-center gap-4">
-                  <div className="flex flex-col items-end">
-                    <span className="font-medium text-slate-200">{price}</span>
-                    <span className={`text-xs font-medium ${isPositive ? 'text-emerald-400' : 'text-rose-400'}`}>
+                  <div className="text-right">
+                    <div className="font-bold text-slate-200">{price}</div>
+                    <div className={`text-xs font-bold ${isPositive ? 'text-emerald-400' : 'text-rose-400'}`}>
                       {isPositive ? '+' : ''}{change.toFixed(2)}%
-                    </span>
+                    </div>
                   </div>
                   <button 
                     onClick={() => removeFavorite(symbol)}
-                    className="p-1 text-slate-500 hover:text-rose-400 transition-colors"
+                    className="p-1.5 text-slate-700 hover:text-rose-500 hover:bg-rose-500/10 rounded-lg transition-all opacity-0 group-hover:opacity-100"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -81,6 +85,7 @@ export const WatchlistWidget: React.FC = () => {
               </div>
             );
           })}
+          {loading && <div className="text-center text-[10px] text-slate-600 font-bold uppercase tracking-widest pt-2">Updating...</div>}
         </div>
       )}
     </div>
