@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { cryptoApi } from '../services/api';
 import { useWatchlistStore } from '../store/useWatchlistStore';
-import { Star, StarOff } from 'lucide-react';
+import { Star, TrendingUp, TrendingDown } from 'lucide-react';
 
 interface MarketData {
   CoinInfo: {

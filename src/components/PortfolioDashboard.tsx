@@ -221,14 +221,14 @@ export const PortfolioDashboard: React.FC = () => {
                     paddingAngle={5}
                     dataKey="value"
                   >
-                    {chartData.map((entry, index) => (
+                    {chartData.map((_, index) => (
                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} stroke="none" />
                     ))}
                   </Pie>
                   <Tooltip 
                     contentStyle={{ backgroundColor: '#0f172a', border: '1px solid #1e293b', borderRadius: '8px' }}
                     itemStyle={{ color: '#fff' }}
-                    formatter={(value: number) => [`$${value.toLocaleString()}`, 'Value']}
+                    formatter={(value: any) => [`$${Number(value).toLocaleString()}`, 'Value']}
                   />
                   <Legend verticalAlign="bottom" height={36}/>
                 </PieChart>

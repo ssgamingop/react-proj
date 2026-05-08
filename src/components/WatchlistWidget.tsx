@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useWatchlistStore } from '../store/useWatchlistStore';
 import { cryptoApi } from '../services/api';
-import { Trash2 } from 'lucide-react';
+import { Trash2, Star } from 'lucide-react';
 
 interface WatchlistPrice {
   PRICE: number;
