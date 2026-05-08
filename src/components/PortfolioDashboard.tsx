@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { usePortfolioStore } from '../store/usePortfolioStore';
 import { cryptoApi } from '../services/api';
-import { Plus, Trash2, TrendingDown, TrendingUp, Wallet } from 'lucide-react';
+import { Plus, Trash2, TrendingDown, TrendingUp, Wallet, PieChart as PieChartIcon, BarChart3 } from 'lucide-react';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
+
+const COLORS = ['#6366f1', '#10b981', '#f59e0b', '#ec4899', '#8b5cf6', '#06b6d4'];
 
 export const PortfolioDashboard: React.FC = () => {
   const { assets, addAsset, removeAsset } = usePortfolioStore();
   const [currentPrices, setCurrentPrices] = useState<Record<string, number>>({});
-  
   const [isAdding, setIsAdding] = useState(false);
-  
   const [newAsset, setNewAsset] = useState({ symbol: '', amount: '', price: '' });
 
   useEffect(() => {
     const fetchPrices = async () => {
       const symbols = [...new Set(assets.map(a => a.coinSymbol))];
       if (symbols.length === 0) return;
-      
       
       try {
         const data = await cryptoApi.getPrices(symbols);
@@ -29,13 +29,11 @@ export const PortfolioDashboard: React.FC = () => {
         }
       } catch (error) {
         console.error("Failed to fetch portfolio prices", error);
-      } finally {
-        
       }
     };
 
     fetchPrices();
-    const interval = setInterval(fetchPrices, 60000); // update every minute
+    const interval = setInterval(fetchPrices, 60000);
     return () => clearInterval(interval);
   }, [assets]);
 
@@ -53,149 +51,265 @@ export const PortfolioDashboard: React.FC = () => {
     setIsAdding(false);
   };
 
-  const totalValue = assets.reduce((total, asset) => {
-    const currentPrice = currentPrices[asset.coinSymbol] || asset.buyPrice;
-    return total + (currentPrice * asset.amount);
-  }, 0);
+  const totals = useMemo(() => {
+    const value = assets.reduce((total, asset) => {
+      const currentPrice = currentPrices[asset.coinSymbol] || asset.buyPrice;
+      return total + (currentPrice * asset.amount);
+    }, 0);
 
-  const totalCost = assets.reduce((total, asset) => total + (asset.buyPrice * asset.amount), 0);
-  const totalProfit = totalValue - totalCost;
-  const profitPercentage = totalCost > 0 ? (totalProfit / totalCost) * 100 : 0;
-  const isProfitPositive = totalProfit >= 0;
+    const cost = assets.reduce((total, asset) => total + (asset.buyPrice * asset.amount), 0);
+    const profit = value - cost;
+    const profitPct = cost > 0 ? (profit / cost) * 100 : 0;
+
+    return { value, cost, profit, profitPct };
+  }, [assets, currentPrices]);
+
+  const chartData = useMemo(() => {
+    return assets.map(asset => {
+      const currentPrice = currentPrices[asset.coinSymbol] || asset.buyPrice;
+      return {
+        name: asset.coinSymbol,
+        value: asset.amount * currentPrice
+      };
+    }).sort((a, b) => b.value - a.value);
+  }, [assets, currentPrices]);
+
+  const isProfitPositive = totals.profit >= 0;
 
   return (
-    <div className="bg-slate-800 rounded-lg shadow-lg p-4">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-bold text-white flex items-center gap-2">
-          <Wallet className="w-6 h-6 text-primary" />
-          Portfolio
-        </h2>
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <div>
+          <h2 className="text-2xl font-bold text-white flex items-center gap-3">
+            <div className="bg-primary/20 p-2 rounded-lg">
+              <Wallet className="w-6 h-6 text-primary" />
+            </div>
+            Portfolio Overview
+          </h2>
+          <p className="text-slate-400 text-sm mt-1">Manage and track your crypto holdings</p>
+        </div>
         <button 
           onClick={() => setIsAdding(!isAdding)}
-          className="bg-primary hover:bg-primary/90 text-white p-2 rounded-lg transition-colors flex items-center gap-1 text-sm font-medium"
+          className="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-xl transition-all flex items-center gap-2 text-sm font-semibold shadow-lg shadow-primary/20"
         >
           <Plus className="w-4 h-4" /> Add Asset
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <div className="bg-slate-700/50 p-4 rounded-lg border border-slate-700">
-          <p className="text-slate-400 text-sm mb-1">Total Balance</p>
-          <p className="text-2xl font-bold text-white">
-            ${totalValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-sm">
+          <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">Total Balance</p>
+          <p className="text-3xl font-bold text-white">
+            ${totals.value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </p>
+          <div className="mt-4 flex items-center gap-2">
+            <span className="text-xs text-slate-500 font-medium">Invested: ${totals.cost.toLocaleString(undefined, { maximumFractionDigits: 0 })}</span>
+          </div>
         </div>
-        <div className="bg-slate-700/50 p-4 rounded-lg border border-slate-700 md:col-span-2">
-          <p className="text-slate-400 text-sm mb-1">Total Profit/Loss</p>
-          <div className="flex items-center gap-3">
-            <p className={`text-2xl font-bold ${isProfitPositive ? 'text-emerald-400' : 'text-rose-400'}`}>
-              {isProfitPositive ? '+' : ''}${totalProfit.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-            </p>
-            <div className={`flex items-center text-sm font-medium px-2 py-1 rounded ${isProfitPositive ? 'bg-emerald-400/10 text-emerald-400' : 'bg-rose-400/10 text-rose-400'}`}>
-              {isProfitPositive ? <TrendingUp className="w-4 h-4 mr-1" /> : <TrendingDown className="w-4 h-4 mr-1" />}
-              {Math.abs(profitPercentage).toFixed(2)}%
+        
+        <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-sm md:col-span-2 flex flex-col justify-between">
+          <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">Total Profit / Loss</p>
+          <div className="flex items-end justify-between">
+            <div className="space-y-1">
+              <p className={`text-3xl font-bold ${isProfitPositive ? 'text-emerald-400' : 'text-rose-400'}`}>
+                {isProfitPositive ? '+' : ''}${Math.abs(totals.profit).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </p>
+              <div className={`inline-flex items-center text-sm font-bold px-2 py-0.5 rounded-full ${isProfitPositive ? 'bg-emerald-400/10 text-emerald-400' : 'bg-rose-400/10 text-rose-400'}`}>
+                {isProfitPositive ? <TrendingUp className="w-3.5 h-3.5 mr-1" /> : <TrendingDown className="w-3.5 h-3.5 mr-1" />}
+                {Math.abs(totals.profitPct).toFixed(2)}%
+              </div>
+            </div>
+            
+            <div className="h-16 w-32 hidden sm:block">
+               {/* Small sparkline-like visual could go here */}
             </div>
           </div>
         </div>
       </div>
 
-      {isAdding && (
-        <form onSubmit={handleAddAsset} className="bg-slate-700/30 p-4 rounded-lg border border-slate-600 mb-6 flex flex-wrap gap-4 items-end">
-          <div className="flex-1 min-w-[120px]">
-            <label className="block text-xs text-slate-400 mb-1">Coin Symbol</label>
-            <input 
-              type="text" 
-              placeholder="e.g. BTC" 
-              value={newAsset.symbol}
-              onChange={e => setNewAsset({...newAsset, symbol: e.target.value})}
-              className="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white outline-none focus:border-primary focus:ring-1 focus:ring-primary"
-              required 
-            />
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-sm">
+          <div className="p-6 border-b border-slate-800 flex justify-between items-center">
+            <h3 className="font-bold text-white flex items-center gap-2">
+              <BarChart3 className="w-4 h-4 text-primary" />
+              Your Assets
+            </h3>
           </div>
-          <div className="flex-1 min-w-[120px]">
-            <label className="block text-xs text-slate-400 mb-1">Amount</label>
-            <input 
-              type="number" 
-              placeholder="0.00" 
-              step="any"
-              value={newAsset.amount}
-              onChange={e => setNewAsset({...newAsset, amount: e.target.value})}
-              className="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white outline-none focus:border-primary focus:ring-1 focus:ring-primary"
-              required 
-            />
-          </div>
-          <div className="flex-1 min-w-[120px]">
-            <label className="block text-xs text-slate-400 mb-1">Buy Price ($)</label>
-            <input 
-              type="number" 
-              placeholder="0.00" 
-              step="any"
-              value={newAsset.price}
-              onChange={e => setNewAsset({...newAsset, price: e.target.value})}
-              className="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white outline-none focus:border-primary focus:ring-1 focus:ring-primary"
-              required 
-            />
-          </div>
-          <button type="submit" className="bg-emerald-500 hover:bg-emerald-600 text-white font-medium py-2 px-4 rounded h-[42px] transition-colors">
-            Save
-          </button>
-        </form>
-      )}
-
-      {assets.length === 0 ? (
-        <div className="text-center text-slate-500 py-8">
-          No assets in your portfolio. Add some to start tracking!
-        </div>
-      ) : (
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm text-slate-300">
-            <thead className="text-xs uppercase text-slate-500 border-b border-slate-700">
-              <tr>
-                <th className="pb-3 font-medium">Asset</th>
-                <th className="pb-3 font-medium">Balance</th>
-                <th className="pb-3 font-medium">Price</th>
-                <th className="pb-3 font-medium">Avg. Buy</th>
-                <th className="pb-3 font-medium">Profit/Loss</th>
-                <th className="pb-3 font-medium"></th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-700/50">
-              {assets.map((asset) => {
-                const currentPrice = currentPrices[asset.coinSymbol];
-                const value = asset.amount * (currentPrice || asset.buyPrice);
-                const cost = asset.amount * asset.buyPrice;
-                const profit = value - cost;
-                const profitPct = cost > 0 ? (profit / cost) * 100 : 0;
-                const isAssetProfit = profit >= 0;
-
-                return (
-                  <tr key={asset.id} className="group hover:bg-slate-700/20">
-                    <td className="py-3 font-bold text-white">{asset.coinSymbol}</td>
-                    <td className="py-3">
-                      <div>${value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
-                      <div className="text-xs text-slate-500">{asset.amount} {asset.coinSymbol}</div>
-                    </td>
-                    <td className="py-3">
-                      {currentPrice ? `$${currentPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 })}` : 'Loading...'}
-                    </td>
-                    <td className="py-3">${asset.buyPrice.toLocaleString()}</td>
-                    <td className={`py-3 font-medium ${isAssetProfit ? 'text-emerald-400' : 'text-rose-400'}`}>
-                      {isAssetProfit ? '+' : ''}${profit.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                      <span className="text-xs ml-1 opacity-70">({isAssetProfit ? '+' : ''}{profitPct.toFixed(2)}%)</span>
-                    </td>
-                    <td className="py-3 text-right">
-                      <button 
-                        onClick={() => removeAsset(asset.id)}
-                        className="text-slate-500 hover:text-rose-400 opacity-0 group-hover:opacity-100 transition-all p-1"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-sm">
+              <thead className="text-xs uppercase text-slate-500 bg-slate-800/30">
+                <tr>
+                  <th className="px-6 py-4 font-semibold">Asset</th>
+                  <th className="px-6 py-4 font-semibold text-right">Balance</th>
+                  <th className="px-6 py-4 font-semibold text-right">Price</th>
+                  <th className="px-6 py-4 font-semibold text-right">Avg. Buy</th>
+                  <th className="px-6 py-4 font-semibold text-right">P/L</th>
+                  <th className="px-6 py-4"></th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-800">
+                {assets.length === 0 ? (
+                  <tr>
+                    <td colSpan={6} className="px-6 py-12 text-center text-slate-500">
+                      No assets found. Click "Add Asset" to begin.
                     </td>
                   </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                ) : (
+                  assets.map((asset) => {
+                    const currentPrice = currentPrices[asset.coinSymbol];
+                    const val = asset.amount * (currentPrice || asset.buyPrice);
+                    const cost = asset.amount * asset.buyPrice;
+                    const profit = val - cost;
+                    const profitPct = cost > 0 ? (profit / cost) * 100 : 0;
+                    const isAssetProfit = profit >= 0;
+
+                    return (
+                      <tr key={asset.id} className="group hover:bg-white/[0.02] transition-colors">
+                        <td className="px-6 py-4">
+                          <div className="font-bold text-white">{asset.coinSymbol}</div>
+                        </td>
+                        <td className="px-6 py-4 text-right">
+                          <div className="font-medium text-white">${val.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+                          <div className="text-xs text-slate-500">{asset.amount} {asset.coinSymbol}</div>
+                        </td>
+                        <td className="px-6 py-4 text-right text-slate-300">
+                          {currentPrice ? `$${currentPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 })}` : '—'}
+                        </td>
+                        <td className="px-6 py-4 text-right text-slate-400">
+                          ${asset.buyPrice.toLocaleString()}
+                        </td>
+                        <td className={`px-6 py-4 text-right font-bold ${isAssetProfit ? 'text-emerald-400' : 'text-rose-400'}`}>
+                          <div className="flex flex-col items-end">
+                            <span>{isAssetProfit ? '+' : ''}{profitPct.toFixed(2)}%</span>
+                            <span className="text-xs opacity-70 font-medium">
+                              {isAssetProfit ? '+' : ''}${Math.abs(profit).toLocaleString(undefined, { maximumFractionDigits: 0 })}
+                            </span>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 text-right">
+                          <button 
+                            onClick={() => removeAsset(asset.id)}
+                            className="text-slate-600 hover:text-rose-500 transition-colors p-2"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-sm">
+          <h3 className="font-bold text-white flex items-center gap-2 mb-6">
+            <PieChartIcon className="w-4 h-4 text-primary" />
+            Asset Allocation
+          </h3>
+          <div className="h-[280px] w-full">
+            {assets.length > 0 ? (
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={chartData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={60}
+                    outerRadius={80}
+                    paddingAngle={5}
+                    dataKey="value"
+                  >
+                    {chartData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} stroke="none" />
+                    ))}
+                  </Pie>
+                  <Tooltip 
+                    contentStyle={{ backgroundColor: '#0f172a', border: '1px solid #1e293b', borderRadius: '8px' }}
+                    itemStyle={{ color: '#fff' }}
+                    formatter={(value: number) => [`$${value.toLocaleString()}`, 'Value']}
+                  />
+                  <Legend verticalAlign="bottom" height={36}/>
+                </PieChart>
+              </ResponsiveContainer>
+            ) : (
+              <div className="h-full flex flex-col items-center justify-center text-slate-500 text-sm">
+                <PieChartIcon className="w-12 h-12 mb-2 opacity-20" />
+                <p>Add assets to see allocation</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {isAdding && (
+        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+          <form 
+            onSubmit={handleAddAsset} 
+            className="bg-slate-900 border border-slate-800 p-8 rounded-3xl shadow-2xl max-w-md w-full space-y-6"
+          >
+            <div>
+              <h3 className="text-xl font-bold text-white mb-1">Add New Asset</h3>
+              <p className="text-slate-400 text-sm">Enter the details of your purchase</p>
+            </div>
+            
+            <div className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Coin Symbol</label>
+                <input 
+                  type="text" 
+                  placeholder="e.g. BTC" 
+                  value={newAsset.symbol}
+                  onChange={e => setNewAsset({...newAsset, symbol: e.target.value})}
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white outline-none focus:border-primary transition-colors font-medium"
+                  required 
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Amount</label>
+                  <input 
+                    type="number" 
+                    placeholder="0.00" 
+                    step="any"
+                    value={newAsset.amount}
+                    onChange={e => setNewAsset({...newAsset, amount: e.target.value})}
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white outline-none focus:border-primary transition-colors font-medium"
+                    required 
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Buy Price ($)</label>
+                  <input 
+                    type="number" 
+                    placeholder="0.00" 
+                    step="any"
+                    value={newAsset.price}
+                    onChange={e => setNewAsset({...newAsset, price: e.target.value})}
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white outline-none focus:border-primary transition-colors font-medium"
+                    required 
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="flex gap-3 pt-2">
+              <button 
+                type="button"
+                onClick={() => setIsAdding(false)}
+                className="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 px-4 rounded-xl transition-colors"
+              >
+                Cancel
+              </button>
+              <button 
+                type="submit" 
+                className="flex-1 bg-primary hover:bg-primary-dark text-white font-bold py-3 px-4 rounded-xl shadow-lg shadow-primary/20 transition-all"
+              >
+                Add to Portfolio
+              </button>
+            </div>
+          </form>
         </div>
       )}
     </div>
