@@ -24,7 +24,7 @@ export const cryptoApi = {
   },
   
   getNews: async () => {
-    const response = await api.get(`/v2/news/?lang=EN`);
+    const response = await api.get('/v2/news?lang=EN');
     return response.data;
   }
 };

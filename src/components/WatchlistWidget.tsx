@@ -58,18 +58,18 @@ export const WatchlistWidget: React.FC = () => {
             const isPositive = change >= 0;
 
             return (
-              <div key={symbol} className="group flex items-center justify-between p-4 bg-slate-950 border border-slate-800 rounded-xl hover:border-slate-700 transition-all">
-                <div className="flex items-center gap-3">
-                  <div className="bg-slate-900 w-10 h-10 rounded-lg flex items-center justify-center font-bold text-white shadow-inner">
+              <div key={symbol} className="group flex items-center justify-between p-4 bg-slate-950 border border-slate-800 rounded-xl hover:border-slate-700 transition-all overflow-hidden">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="bg-slate-900 w-10 h-10 rounded-lg flex items-center justify-center font-bold text-white shadow-inner shrink-0">
                     {symbol.charAt(0)}
                   </div>
-                  <div className="flex flex-col">
-                    <span className="font-bold text-white leading-tight">{symbol}</span>
-                    <span className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-0.5">Crypto</span>
+                  <div className="flex flex-col min-w-0">
+                    <span className="font-bold text-white leading-tight truncate">{symbol}</span>
+                    <span className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-0.5 truncate">Crypto</span>
                   </div>
                 </div>
-                <div className="flex items-center gap-4">
-                  <div className="text-right">
+                <div className="flex items-center gap-4 shrink-0">
+                  <div className="text-right whitespace-nowrap">
                     <div className="font-bold text-slate-200">{price}</div>
                     <div className={`text-xs font-bold ${isPositive ? 'text-emerald-400' : 'text-rose-400'}`}>
                       {isPositive ? '+' : ''}{change.toFixed(2)}%
