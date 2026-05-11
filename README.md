@@ -1,71 +1,84 @@
-# Crypto Tracker
+# 🚀 Crypto Tracker
 
-A modern, real-time financial dashboard to monitor cryptocurrency prices, manage a mock portfolio, and track market trends. Built with React, Vite, Tailwind CSS, and the CryptoCompare API.
+A high-performance, real-time financial dashboard designed to monitor cryptocurrency prices, manage mock portfolios, and analyze market trends. Built with a modern tech stack including **React 19**, **Vite**, and **Tailwind CSS v4**.
 
-## Features
+---
 
-- 📊 **Market Overview**: View the top 100 cryptocurrencies by market cap with real-time price updates and 24h change indicators.
-- 💼 **Portfolio Tracker**: Manage a mock investment portfolio. Track your total balance, average buy prices, and calculate real-time profit/loss.
-- ⭐ **Favorites Watchlist**: Keep a close eye on your preferred coins with a dedicated real-time watchlist widget.
-- 📈 **Interactive Price Charts**: Visualize historical price data (7D, 30D, 90D) using beautiful area charts powered by Recharts.
-- 🔔 **Custom Price Alerts**: Set target price conditions (above/below) and receive instant toast notifications when the market hits your marks.
-- 📰 **Live News Feed**: Stay updated with the latest cryptocurrency headlines directly within the dashboard.
-- 💾 **Local Persistence**: Your portfolio, watchlist, and alerts are saved automatically to LocalStorage so you never lose your data.
+## ✨ Key Features
 
-## Tech Stack
+- 📊 **Real-time Market Overview**: Track the top 100 cryptocurrencies by market cap with live price updates and volatility indicators.
+- 💼 **Professional Portfolio Tracker**: Simulate investments with a mock portfolio. Includes real-time balance tracking, average buy price analysis, and P/L calculations.
+- ⭐ **Favorites Watchlist**: Curate a personalized list of assets for quick access and real-time monitoring.
+- 📈 **Interactive Data Visualization**: Analyze market movements with dynamic area charts (7D, 30D, 90D) powered by Recharts.
+- 🔔 **Intelligent Price Alerts**: Set custom threshold alerts and receive instant notifications via React Hot Toast.
+- 📰 **Integrated News Hub**: Stay informed with a live feed of the latest crypto news headlines.
+- 💾 **Reliable Persistence**: All user data (portfolio, watchlist, alerts) is securely persisted via LocalStorage.
 
-- **Framework**: [React 18](https://react.dev/) + [Vite](https://vitejs.dev/)
+---
+
+## 🛠️ Tech Stack
+
+- **Core**: [React 19](https://react.dev/) + [Vite](https://vitejs.dev/)
 - **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
 - **State Management**: [Zustand](https://github.com/pmndrs/zustand)
-- **Charting**: [Recharts](https://recharts.org/)
-- **Data Provider**: [CryptoCompare API](https://min-api.cryptocompare.com/) (Free Tier)
-- **Icons**: [Lucide React](https://lucide.dev/)
+- **Visualization**: [Recharts](https://recharts.org/)
+- **Networking**: [Axios](https://axios-http.com/)
+- **API**: [CryptoCompare Data API](https://min-api.cryptocompare.com/)
+- **UI Components**: [Lucide React](https://lucide.dev/) & [React Hot Toast](https://react-hot-toast.com/)
 
-## Getting Started
+---
+
+## 🚀 Getting Started
 
 ### Prerequisites
 
-Ensure you have [Node.js](https://nodejs.org/) installed (v18 or higher recommended).
+- [Node.js](https://nodejs.org/) (v18 or higher)
+- npm or yarn
 
 ### Installation
 
-1. Clone the repository:
+1. **Clone the repository**:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/ssgamingop/react-proj.git
    cd proj
    ```
 
-2. Install dependencies:
+2. **Install dependencies**:
    ```bash
    npm install
    ```
 
-3. Start the development server:
+3. **Launch development server**:
    ```bash
    npm run dev
    ```
 
-4. Open your browser and navigate to `http://localhost:5173` (or the port provided by Vite).
+4. **Access the App**:
+   Navigate to `http://localhost:5173` in your browser.
 
-## Building for Production
+---
 
-To create a production-ready build:
+## 👥 Contributors
 
-```bash
-npm run build
-```
+This project was developed as a group effort for our college coursework. Below are the core contributors and their primary responsibilities:
 
-This will generate optimized static assets in the `dist` directory. To preview the build:
+| Name | Role | Key Contributions |
+| :--- | :--- | :--- |
+| **Somyajeet** | UI/UX & Documentation | Lead UI design using Tailwind CSS, Logo branding, and Technical Documentation. |
+| **Krishiv** | API & Services | Integrated CryptoCompare API, handled Axios networking, and News Feed logic. |
+| **Sushant** | State & Persistence | Architected global state with Zustand and implemented LocalStorage data persistence. |
+| **Kaustubh** | Charts & Alerts | Developed interactive Recharts visualization and the real-time Price Alert system. |
 
-```bash
-npm run preview
-```
+---
 
-## Usage Notes
+## 📝 Usage Notes
 
-- **API Limits**: This application relies on the free tier of the CryptoCompare API. Real-time polling is set to conservative intervals (e.g., 60s for portfolio, 20s for alerts) to respect rate limits.
-- **Persistence**: Clearing your browser's local storage will reset your portfolio, watchlist, and alerts.
+- **API Rate Limits**: The application uses the CryptoCompare free tier. Polling intervals are optimized to stay within limits.
+- **Browser Storage**: Clearing browser cache/storage will reset your local portfolio and watchlist data.
 
-## License
+---
 
-MIT License
+## 📄 License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
