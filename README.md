@@ -64,9 +64,9 @@ This project was developed as a group effort for our college coursework. Below a
 
 | Name | Role | Key Contributions |
 | :--- | :--- | :--- |
-| **Somyajeet** | UI/UX & Documentation | Lead UI design using Tailwind CSS, Logo branding, and Technical Documentation. |
+| **Somyajeet** | State & Persistence | Architected global state with Zustand and implemented LocalStorage data persistence. |
 | **Krishiv** | API & Services | Integrated CryptoCompare API, handled Axios networking, and News Feed logic. |
-| **Sushant** | State & Persistence | Architected global state with Zustand and implemented LocalStorage data persistence. |
+| **Sushant** | UI/UX & Documentation | Lead UI design using Tailwind CSS, Logo branding, and Technical Documentation. |
 | **Kaustubh** | Charts & Alerts | Developed interactive Recharts visualization and the real-time Price Alert system. |
 
 ---
