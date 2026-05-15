@@ -38,6 +38,7 @@ export const TerminalLayout: React.FC<{ children: React.ReactNode }> = ({ childr
     { icon: <Users size={20} />, label: 'Community', path: '/community' },
   ];
 
+  return (
     <div className="flex h-screen overflow-hidden bg-slate-50 dark:bg-[#0b0e14] text-slate-900 dark:text-slate-100 font-sans transition-colors duration-300 relative">
       <Toaster 
         position="bottom-right" 
