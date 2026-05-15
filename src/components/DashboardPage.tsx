@@ -8,13 +8,6 @@ import { AlertsWidget } from './AlertsWidget';
 export const DashboardPage = () => {
   return (
     <TerminalLayout>
-            fontSize: '13px',
-            fontWeight: '600',
-            boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)'
-          }
-        }} 
-      />
-      
       <div className="flex flex-col gap-6 max-w-[1600px] mx-auto h-full animate-in fade-in duration-500">
         
         {/* KPI Banner Row (New Full Width row to fix small overview cards) */}
