@@ -80,78 +80,84 @@ export const PortfolioDashboard: React.FC = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-3">
-            <div className="bg-primary/10 dark:bg-primary/20 p-2 rounded-lg">
+          <h2 className="text-2xl font-extrabold text-slate-900 dark:text-white flex items-center gap-3 tracking-tight">
+            <div className="bg-primary/10 dark:bg-primary/20 p-2 rounded-xl">
               <Wallet className="w-6 h-6 text-primary" />
             </div>
             Portfolio Overview
           </h2>
-          <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">Manage and track your crypto holdings</p>
+          <p className="text-slate-500 dark:text-slate-400 text-sm mt-1 font-medium">Manage and track your crypto holdings</p>
         </div>
         <button 
           onClick={() => setIsAdding(!isAdding)}
-          className="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-xl transition-all flex items-center gap-2 text-sm font-semibold shadow-md"
+          className="bg-gradient-to-r from-primary to-indigo-600 hover:from-primary-dark hover:to-indigo-700 text-white px-5 py-2.5 rounded-xl transition-all flex items-center gap-2 text-sm font-bold shadow-[0_0_15px_rgba(99,102,241,0.3)] hover:-translate-y-0.5"
         >
           <Plus className="w-4 h-4" /> Add Asset
         </button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white dark:bg-[#131722] border border-slate-200 dark:border-slate-800/60 p-6 rounded-2xl shadow-sm transition-colors">
-          <p className="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">Total Balance</p>
-          <p className="text-3xl font-bold text-slate-900 dark:text-white">
+        <div className="bg-white/80 dark:bg-[#131722]/80 backdrop-blur-xl border border-slate-200 dark:border-slate-800/60 p-6 rounded-3xl shadow-[0_4px_24px_rgba(0,0,0,0.02)] dark:shadow-none transition-colors hover:shadow-md group">
+          <p className="text-[11px] text-slate-500 dark:text-slate-500 font-bold uppercase tracking-widest mb-2">Total Balance</p>
+          <p className="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
             ${totals.value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </p>
-          <div className="mt-4 flex items-center gap-2">
-            <span className="text-xs text-slate-500 font-medium">Invested: ${totals.cost.toLocaleString(undefined, { maximumFractionDigits: 0 })}</span>
+          <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800/60 flex items-center gap-2">
+            <span className="text-xs text-slate-500 font-bold uppercase tracking-widest">Invested: <span className="text-slate-700 dark:text-slate-300">${totals.cost.toLocaleString(undefined, { maximumFractionDigits: 0 })}</span></span>
           </div>
         </div>
         
-        <div className="bg-white dark:bg-[#131722] border border-slate-200 dark:border-slate-800/60 p-6 rounded-2xl shadow-sm md:col-span-2 flex flex-col justify-between transition-colors">
-          <p className="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">Total Profit / Loss</p>
+        <div className="bg-white/80 dark:bg-[#131722]/80 backdrop-blur-xl border border-slate-200 dark:border-slate-800/60 p-6 rounded-3xl shadow-[0_4px_24px_rgba(0,0,0,0.02)] dark:shadow-none md:col-span-2 flex flex-col justify-between transition-colors hover:shadow-md group">
+          <p className="text-[11px] text-slate-500 dark:text-slate-500 font-bold uppercase tracking-widest mb-2">Total Profit / Loss</p>
           <div className="flex items-end justify-between">
             <div className="space-y-1">
-              <p className={`text-3xl font-bold ${isProfitPositive ? 'text-emerald-500 dark:text-emerald-400' : 'text-rose-500 dark:text-rose-400'}`}>
+              <p className={`text-4xl font-extrabold tracking-tight ${isProfitPositive ? 'text-emerald-500' : 'text-rose-500'}`}>
                 {isProfitPositive ? '+' : ''}${Math.abs(totals.profit).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </p>
-              <div className={`inline-flex items-center text-sm font-bold px-2 py-0.5 rounded-full ${isProfitPositive ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-400/10 dark:text-emerald-400' : 'bg-rose-100 text-rose-600 dark:bg-rose-400/10 dark:text-rose-400'}`}>
-                {isProfitPositive ? <TrendingUp className="w-3.5 h-3.5 mr-1" /> : <TrendingDown className="w-3.5 h-3.5 mr-1" />}
+              <div className={`inline-flex items-center text-sm font-bold px-2.5 py-1 rounded-xl mt-2 ${isProfitPositive ? 'bg-emerald-100/50 text-emerald-600 dark:bg-emerald-400/10 dark:text-emerald-400' : 'bg-rose-100/50 text-rose-600 dark:bg-rose-400/10 dark:text-rose-400'}`}>
+                {isProfitPositive ? <TrendingUp className="w-4 h-4 mr-1.5" /> : <TrendingDown className="w-4 h-4 mr-1.5" />}
                 {Math.abs(totals.profitPct).toFixed(2)}%
               </div>
             </div>
             
-            <div className="h-16 w-32 hidden sm:block">
-               {/* Small sparkline-like visual could go here */}
+            <div className="h-20 w-32 hidden sm:block relative overflow-hidden rounded-xl bg-slate-50/50 dark:bg-black/20 border border-slate-100 dark:border-slate-800/80 flex items-center justify-center">
+               <BarChart3 className={`w-8 h-8 opacity-20 ${isProfitPositive ? 'text-emerald-500' : 'text-rose-500'}`} />
             </div>
           </div>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 bg-white dark:bg-[#131722] border border-slate-200 dark:border-slate-800/60 rounded-2xl overflow-hidden shadow-sm transition-colors">
-          <div className="p-6 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
-            <h3 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
-              <BarChart3 className="w-4 h-4 text-primary" />
+        <div className="lg:col-span-2 bg-white/80 dark:bg-[#131722]/80 backdrop-blur-xl border border-slate-200 dark:border-slate-800/60 rounded-3xl overflow-hidden shadow-[0_4px_24px_rgba(0,0,0,0.02)] dark:shadow-none transition-colors">
+          <div className="p-6 border-b border-slate-200 dark:border-slate-800/60 flex justify-between items-center">
+            <h3 className="font-extrabold text-xl text-slate-900 dark:text-white flex items-center gap-2 tracking-tight">
+              <div className="bg-primary/10 p-1.5 rounded-lg">
+                 <BarChart3 className="w-5 h-5 text-primary" />
+              </div>
               Your Assets
             </h3>
           </div>
           <div className="table-container">
             <table className="w-full text-left text-sm border-collapse min-w-[500px]">
-              <thead className="text-xs uppercase text-slate-500 bg-slate-50 dark:bg-slate-800/30">
+              <thead className="text-[10px] font-extrabold uppercase tracking-widest text-slate-500 bg-slate-50/50 dark:bg-slate-800/20 border-b border-slate-200 dark:border-slate-800/60">
                 <tr>
-                  <th className="px-6 py-4 font-semibold whitespace-nowrap">Asset</th>
-                  <th className="px-6 py-4 font-semibold text-right whitespace-nowrap">Balance</th>
-                  <th className="px-6 py-4 font-semibold text-right whitespace-nowrap">Price</th>
-                  <th className="px-6 py-4 font-semibold text-right whitespace-nowrap">Avg. Buy</th>
-                  <th className="px-6 py-4 font-semibold text-right whitespace-nowrap">P/L</th>
-                  <th className="px-6 py-4"></th>
+                  <th className="px-6 py-5 whitespace-nowrap">Asset</th>
+                  <th className="px-6 py-5 text-right whitespace-nowrap">Balance</th>
+                  <th className="px-6 py-5 text-right whitespace-nowrap">Price</th>
+                  <th className="px-6 py-5 text-right whitespace-nowrap">Avg. Buy</th>
+                  <th className="px-6 py-5 text-right whitespace-nowrap">P/L</th>
+                  <th className="px-6 py-5"></th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800/40">
                 {assets.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="px-6 py-12 text-center text-slate-500">
-                      No assets found. Click "Add Asset" to begin.
+                    <td colSpan={6} className="px-6 py-16 text-center text-slate-500 border-2 border-dashed border-slate-200 dark:border-slate-800/60 m-6 rounded-2xl">
+                      <div className="flex flex-col items-center justify-center">
+                        <Wallet className="w-8 h-8 mb-3 opacity-20" />
+                        <span className="text-sm font-bold tracking-tight">No assets found</span>
+                        <span className="text-xs mt-1 text-slate-400">Click "Add Asset" to begin</span>
+                      </div>
                     </td>
                   </tr>
                 ) : (
@@ -166,22 +172,22 @@ export const PortfolioDashboard: React.FC = () => {
                     return (
                       <tr key={asset.id} className="group hover:bg-slate-50 dark:hover:bg-white/[0.02] transition-colors">
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="font-bold text-slate-900 dark:text-white">{asset.coinSymbol}</div>
+                          <div className="font-extrabold text-slate-900 dark:text-white tracking-tight">{asset.coinSymbol}</div>
                         </td>
                         <td className="px-6 py-4 text-right whitespace-nowrap">
-                          <div className="font-medium text-slate-900 dark:text-white">${val.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
-                          <div className="text-[10px] text-slate-500 font-bold uppercase tracking-tight">{asset.amount} {asset.coinSymbol}</div>
+                          <div className="font-extrabold text-slate-900 dark:text-white">${val.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+                          <div className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-0.5">{asset.amount} {asset.coinSymbol}</div>
                         </td>
-                        <td className="px-6 py-4 text-right text-slate-600 dark:text-slate-300 whitespace-nowrap font-medium">
+                        <td className="px-6 py-4 text-right text-slate-600 dark:text-slate-300 whitespace-nowrap font-bold">
                           {currentPrice ? `$${currentPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 })}` : '—'}
                         </td>
-                        <td className="px-6 py-4 text-right text-slate-500 dark:text-slate-400 whitespace-nowrap font-medium">
+                        <td className="px-6 py-4 text-right text-slate-500 dark:text-slate-400 whitespace-nowrap font-bold">
                           ${asset.buyPrice.toLocaleString()}
                         </td>
-                        <td className={`px-6 py-4 text-right font-bold whitespace-nowrap ${isAssetProfit ? 'text-emerald-500 dark:text-emerald-400' : 'text-rose-500 dark:text-rose-400'}`}>
+                        <td className={`px-6 py-4 text-right font-bold whitespace-nowrap ${isAssetProfit ? 'text-emerald-500' : 'text-rose-500'}`}>
                           <div className="flex flex-col items-end">
-                            <span>{isAssetProfit ? '+' : ''}{profitPct.toFixed(2)}%</span>
-                            <span className="text-[10px] opacity-70 font-bold uppercase tracking-tighter">
+                            <span className="flex items-center gap-1">{isAssetProfit ? '+' : ''}{profitPct.toFixed(2)}%</span>
+                            <span className="text-[10px] opacity-80 font-bold uppercase tracking-widest mt-0.5">
                               {isAssetProfit ? '+' : ''}${Math.abs(profit).toLocaleString(undefined, { maximumFractionDigits: 0 })}
                             </span>
                           </div>
@@ -189,7 +195,7 @@ export const PortfolioDashboard: React.FC = () => {
                         <td className="px-6 py-4 text-right whitespace-nowrap">
                           <button 
                             onClick={() => removeAsset(asset.id)}
-                            className="text-slate-400 hover:text-rose-500 transition-colors p-2"
+                            className="text-slate-400 dark:text-slate-600 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-colors p-2 rounded-xl opacity-0 group-hover:opacity-100"
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -203,12 +209,15 @@ export const PortfolioDashboard: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-white dark:bg-[#131722] border border-slate-200 dark:border-slate-800/60 rounded-2xl p-6 shadow-sm transition-colors">
-          <h3 className="font-bold text-slate-900 dark:text-white flex items-center gap-2 mb-6">
-            <PieChartIcon className="w-4 h-4 text-primary" />
+        <div className="bg-white/80 dark:bg-[#131722]/80 backdrop-blur-xl border border-slate-200 dark:border-slate-800/60 rounded-3xl p-6 shadow-[0_4px_24px_rgba(0,0,0,0.02)] dark:shadow-none transition-colors relative overflow-hidden group">
+          <div className="absolute bottom-[-20%] right-[-20%] w-48 h-48 bg-primary/5 rounded-full blur-3xl pointer-events-none group-hover:bg-primary/10 transition-colors" />
+          <h3 className="font-extrabold text-xl tracking-tight text-slate-900 dark:text-white flex items-center gap-2 mb-6 relative z-10">
+            <div className="bg-primary/10 p-1.5 rounded-lg">
+              <PieChartIcon className="w-5 h-5 text-primary" />
+            </div>
             Asset Allocation
           </h3>
-          <div className="h-[280px] w-full">
+          <div className="h-[280px] w-full relative z-10">
             {assets.length > 0 ? (
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
@@ -216,27 +225,29 @@ export const PortfolioDashboard: React.FC = () => {
                     data={chartData}
                     cx="50%"
                     cy="50%"
-                    innerRadius={60}
-                    outerRadius={80}
+                    innerRadius={70}
+                    outerRadius={95}
                     paddingAngle={5}
                     dataKey="value"
+                    stroke="none"
                   >
                     {chartData.map((_, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} stroke="none" />
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
                   </Pie>
                   <Tooltip 
-                    contentStyle={{ backgroundColor: 'var(--tw-colors-slate-900)', border: 'none', borderRadius: '8px', color: '#fff' }}
+                    contentStyle={{ backgroundColor: 'var(--tw-colors-slate-900)', border: '1px solid var(--tw-colors-slate-800)', borderRadius: '12px', color: '#fff', fontWeight: 'bold' }}
                     itemStyle={{ color: '#fff' }}
                     formatter={(value: any) => [`$${Number(value).toLocaleString()}`, 'Value']}
                   />
-                  <Legend verticalAlign="bottom" height={36}/>
+                  <Legend verticalAlign="bottom" height={36} iconType="circle" wrapperStyle={{ fontSize: '11px', fontWeight: 'bold' }} />
                 </PieChart>
               </ResponsiveContainer>
             ) : (
               <div className="h-full flex flex-col items-center justify-center text-slate-500 text-sm">
-                <PieChartIcon className="w-12 h-12 mb-2 opacity-20" />
-                <p>Add assets to see allocation</p>
+                <PieChartIcon className="w-12 h-12 mb-3 opacity-20" />
+                <p className="font-bold tracking-tight">No allocation data</p>
+                <p className="text-xs mt-1 text-slate-400">Add assets to view</p>
               </div>
             )}
           </div>
