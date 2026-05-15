@@ -107,7 +107,7 @@ export const PortfolioDashboard: React.FC = () => {
           </div>
         </div>
         
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm md:col-span-2 flex flex-col justify-between transition-colors">
+        <div className="bg-white dark:bg-[#131722] border border-slate-200 dark:border-slate-800/60 p-6 rounded-2xl shadow-sm md:col-span-2 flex flex-col justify-between transition-colors">
           <p className="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">Total Profit / Loss</p>
           <div className="flex items-end justify-between">
             <div className="space-y-1">
@@ -128,7 +128,7 @@ export const PortfolioDashboard: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm transition-colors">
+        <div className="lg:col-span-2 bg-white dark:bg-[#131722] border border-slate-200 dark:border-slate-800/60 rounded-2xl overflow-hidden shadow-sm transition-colors">
           <div className="p-6 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
             <h3 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
               <BarChart3 className="w-4 h-4 text-primary" />
@@ -203,7 +203,7 @@ export const PortfolioDashboard: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm transition-colors">
+        <div className="bg-white dark:bg-[#131722] border border-slate-200 dark:border-slate-800/60 rounded-2xl p-6 shadow-sm transition-colors">
           <h3 className="font-bold text-slate-900 dark:text-white flex items-center gap-2 mb-6">
             <PieChartIcon className="w-4 h-4 text-primary" />
             Asset Allocation
@@ -247,7 +247,7 @@ export const PortfolioDashboard: React.FC = () => {
         <div className="fixed inset-0 bg-slate-900/50 dark:bg-slate-950/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
           <form 
             onSubmit={handleAddAsset} 
-            className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-8 rounded-3xl shadow-2xl max-w-md w-full space-y-6"
+            className="bg-white dark:bg-[#131722] border border-slate-200 dark:border-slate-800/60 p-8 rounded-3xl shadow-2xl max-w-md w-full space-y-6"
           >
             <div>
               <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-1">Add New Asset</h3>

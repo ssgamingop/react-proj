@@ -35,7 +35,7 @@ export const DashboardPage = () => {
           
           {/* Right Sidebar Area */}
           <div className="xl:col-span-4 flex flex-col gap-4">
-            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
+            <div className="bg-white dark:bg-[#131722] border border-slate-200 dark:border-slate-800/60 rounded-2xl p-6 shadow-sm">
               <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-4">Market Overview 24H</h3>
               <div className="grid grid-cols-3 gap-2">
                 <div>
