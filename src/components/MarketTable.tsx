@@ -65,7 +65,7 @@ export const MarketTable: React.FC = () => {
 
   return (
     <div className="space-y-4">
-      <div className="table-container bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm transition-colors">
+      <div className="table-container bg-white dark:bg-[#131722] border border-slate-200 dark:border-slate-800/60 rounded-2xl shadow-sm transition-colors">
         <table className="w-full text-left text-sm border-collapse min-w-[600px]">
           <thead className="bg-slate-50 dark:bg-slate-800/40 text-[10px] font-bold uppercase tracking-widest text-slate-500 border-b border-slate-200 dark:border-slate-800">
             <tr>
