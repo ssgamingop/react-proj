@@ -1,8 +1,11 @@
 import { TerminalLayout } from './TerminalLayout';
 import { AlertsWidget } from './AlertsWidget';
 import { Bell, ShieldAlert, Zap } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 export const AlertsPage = () => {
+  const showDevToast = () => toast('This feature is currently under development.', { icon: '🚧' });
+
   return (
     <TerminalLayout>
       <div className="flex flex-col gap-6 max-w-[1600px] mx-auto h-full animate-in fade-in duration-500">
@@ -31,7 +34,7 @@ export const AlertsPage = () => {
                    { type: "volatility", title: "ETH High Volatility Detected", time: "5 hours ago", icon: <ShieldAlert className="w-4 h-4 text-amber-500" />, bg: "bg-amber-500/10" },
                    { type: "price", title: "SOL Dropped Below $140", time: "1 day ago", icon: <Zap className="w-4 h-4 text-rose-500" />, bg: "bg-rose-500/10" },
                  ].map((alert, i) => (
-                   <div key={i} className="flex items-center gap-4 p-4 rounded-2xl border border-slate-100 dark:border-slate-800/60 bg-slate-50/50 dark:bg-white/[0.02] hover:bg-slate-100 dark:hover:bg-white/[0.04] transition-colors cursor-pointer group">
+                   <div key={i} onClick={showDevToast} className="flex items-center gap-4 p-4 rounded-2xl border border-slate-100 dark:border-slate-800/60 bg-slate-50/50 dark:bg-white/[0.02] hover:bg-slate-100 dark:hover:bg-white/[0.04] transition-colors cursor-pointer group">
                       <div className={`${alert.bg} p-3 rounded-xl shrink-0 group-hover:scale-110 transition-transform`}>
                         {alert.icon}
                       </div>
