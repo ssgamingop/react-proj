@@ -38,7 +38,7 @@ export const WatchlistWidget: React.FC = () => {
   }, [favorites]);
 
   return (
-    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm p-6 transition-colors">
+    <div className="bg-white dark:bg-[#131722] border border-slate-200 dark:border-slate-800/60 rounded-2xl shadow-sm p-6 transition-colors">
       <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
         <Star className="w-5 h-5 text-primary fill-primary/20" />
         Watchlist
