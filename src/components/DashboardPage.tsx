@@ -2,22 +2,12 @@ import { TerminalLayout } from './TerminalLayout';
 import { MarketTable } from './MarketTable';
 import { NewsWidget } from './NewsWidget';
 import { WatchlistWidget } from './WatchlistWidget';
-import { PortfolioDashboard } from './PortfolioDashboard';
 import { PriceChart } from './PriceChart';
 import { AlertsWidget } from './AlertsWidget';
-import { Toaster } from 'react-hot-toast';
 
 export const DashboardPage = () => {
   return (
     <TerminalLayout>
-      <Toaster 
-        position="bottom-right" 
-        toastOptions={{
-          style: { 
-            background: 'var(--tw-colors-slate-900)', 
-            color: '#f8fafc', 
-            border: '1px solid var(--tw-colors-slate-800)',
-            borderRadius: '12px',
             fontSize: '13px',
             fontWeight: '600',
             boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)'
@@ -84,26 +74,22 @@ export const DashboardPage = () => {
         {/* Main Split Row: Chart + News */}
         <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 min-h-[450px]">
           {/* Main Chart Area */}
-          <div className="xl:col-span-8 flex flex-col gap-6">
+          <div className="xl:col-span-8 flex flex-col">
             <PriceChart symbol="BTC" />
           </div>
           
           {/* Right Sidebar Area */}
-          <div className="xl:col-span-4 flex flex-col gap-6">
+          <div className="xl:col-span-4 flex flex-col">
             <div className="flex-1 min-h-[400px]">
               <NewsWidget />
             </div>
           </div>
         </div>
 
-        {/* Bottom Row: Market Table & Other Widgets */}
-        <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 pb-12">
-          <div className="xl:col-span-4 flex flex-col gap-6">
-            <WatchlistWidget />
-            <AlertsWidget />
-          </div>
-          <div className="xl:col-span-8 flex flex-col gap-6">
-            <div className="bg-white/80 dark:bg-[#131722]/80 backdrop-blur-xl border border-slate-200 dark:border-slate-800/60 rounded-3xl overflow-hidden shadow-sm transition-colors">
+        {/* Middle Row: Market Table & Other Widgets */}
+        <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
+          <div className="xl:col-span-8 flex flex-col">
+            <div className="bg-white/80 dark:bg-[#131722]/80 backdrop-blur-xl border border-slate-200 dark:border-slate-800/60 rounded-3xl overflow-hidden shadow-sm transition-colors h-full">
               <div className="p-6 border-b border-slate-200 dark:border-slate-800/60 flex items-center justify-between">
                 <h3 className="text-xl font-extrabold tracking-tight text-slate-900 dark:text-white">Top Assets</h3>
                 <button className="text-[10px] font-bold text-primary uppercase tracking-widest hover:underline">View All</button>
@@ -112,14 +98,14 @@ export const DashboardPage = () => {
                 <MarketTable />
               </div>
             </div>
-            
-            {/* Portfolio Section below Market Table */}
-            <div className="mt-4">
-              <PortfolioDashboard />
-            </div>
+          </div>
+          
+          <div className="xl:col-span-4 flex flex-col gap-6">
+            <WatchlistWidget />
+            <AlertsWidget />
           </div>
         </div>
       </div>
     </TerminalLayout>
   );
-}
+};
