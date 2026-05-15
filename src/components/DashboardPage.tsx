@@ -68,11 +68,11 @@ export const DashboardPage = () => {
             <AlertsWidget />
           </div>
           <div className="xl:col-span-8 flex flex-col gap-4">
-            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm">
-              <div className="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+            <div className="bg-white dark:bg-[#131722] border border-slate-200 dark:border-slate-800/60 rounded-2xl overflow-hidden shadow-sm">
+              <div className="p-6 border-b border-slate-200 dark:border-slate-800/60 flex items-center justify-between">
                 <h3 className="text-sm font-bold text-slate-900 dark:text-white">Top Assets</h3>
               </div>
-              <div className="p-0 border-t-0 border-slate-200 dark:border-slate-800 [&>.bg-white]:border-none [&>.bg-white]:shadow-none [&>.bg-white]:rounded-none">
+              <div className="p-0 [&>div>div]:border-none [&>div>div]:shadow-none [&>div>div]:rounded-none">
                 <MarketTable />
               </div>
             </div>
