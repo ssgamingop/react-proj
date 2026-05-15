@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { usePortfolioStore } from '../store/usePortfolioStore';
+import { useMarketStore } from '../store/useMarketStore';
 import { cryptoApi } from '../services/api';
 import { Plus, Trash2, TrendingDown, TrendingUp, Wallet, PieChart as PieChartIcon, BarChart3 } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
@@ -8,6 +9,7 @@ const COLORS = ['#6366f1', '#10b981', '#f59e0b', '#ec4899', '#8b5cf6', '#06b6d4'
 
 export const PortfolioDashboard: React.FC = () => {
   const { assets, addAsset, removeAsset } = usePortfolioStore();
+  const { prices: wsPrices } = useMarketStore();
   const [currentPrices, setCurrentPrices] = useState<Record<string, number>>({});
   const [isAdding, setIsAdding] = useState(false);
   const [newAsset, setNewAsset] = useState({ symbol: '', amount: '', price: '' });
@@ -53,7 +55,7 @@ export const PortfolioDashboard: React.FC = () => {
 
   const totals = useMemo(() => {
     const value = assets.reduce((total, asset) => {
-      const currentPrice = currentPrices[asset.coinSymbol] || asset.buyPrice;
+      const currentPrice = wsPrices[asset.coinSymbol]?.price || currentPrices[asset.coinSymbol] || asset.buyPrice;
       return total + (currentPrice * asset.amount);
     }, 0);
 
@@ -62,17 +64,17 @@ export const PortfolioDashboard: React.FC = () => {
     const profitPct = cost > 0 ? (profit / cost) * 100 : 0;
 
     return { value, cost, profit, profitPct };
-  }, [assets, currentPrices]);
+  }, [assets, currentPrices, wsPrices]);
 
   const chartData = useMemo(() => {
     return assets.map(asset => {
-      const currentPrice = currentPrices[asset.coinSymbol] || asset.buyPrice;
+      const currentPrice = wsPrices[asset.coinSymbol]?.price || currentPrices[asset.coinSymbol] || asset.buyPrice;
       return {
         name: asset.coinSymbol,
         value: asset.amount * currentPrice
       };
     }).sort((a, b) => b.value - a.value);
-  }, [assets, currentPrices]);
+  }, [assets, currentPrices, wsPrices]);
 
   const isProfitPositive = totals.profit >= 0;
 
@@ -137,7 +139,7 @@ export const PortfolioDashboard: React.FC = () => {
               Your Assets
             </h3>
           </div>
-          <div className="table-container">
+          <div className="table-container overflow-x-auto scrollbar-hide">
             <table className="w-full text-left text-sm border-collapse min-w-[500px]">
               <thead className="text-[10px] font-extrabold uppercase tracking-widest text-slate-500 bg-slate-50/50 dark:bg-slate-800/20 border-b border-slate-200 dark:border-slate-800/60">
                 <tr>
@@ -162,23 +164,29 @@ export const PortfolioDashboard: React.FC = () => {
                   </tr>
                 ) : (
                   assets.map((asset) => {
-                    const currentPrice = currentPrices[asset.coinSymbol];
+                    const liveData = wsPrices[asset.coinSymbol];
+                    const currentPrice = liveData?.price || currentPrices[asset.coinSymbol];
                     const val = asset.amount * (currentPrice || asset.buyPrice);
                     const cost = asset.amount * asset.buyPrice;
                     const profit = val - cost;
                     const profitPct = cost > 0 ? (profit / cost) * 100 : 0;
                     const isAssetProfit = profit >= 0;
+                    
+                    const priceColor = liveData?.direction === 'up' ? 'text-emerald-500 dark:text-emerald-400' : liveData?.direction === 'down' ? 'text-rose-500 dark:text-rose-400' : 'text-slate-600 dark:text-slate-300';
 
                     return (
                       <tr key={asset.id} className="group hover:bg-slate-50 dark:hover:bg-white/[0.02] transition-colors">
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="font-extrabold text-slate-900 dark:text-white tracking-tight">{asset.coinSymbol}</div>
+                          <div className="font-extrabold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+                             {asset.coinSymbol}
+                             <div className={`w-1.5 h-1.5 rounded-full ${isAssetProfit ? 'bg-emerald-500' : 'bg-rose-500'} ${liveData ? 'animate-pulse' : ''}`}></div>
+                          </div>
                         </td>
                         <td className="px-6 py-4 text-right whitespace-nowrap">
                           <div className="font-extrabold text-slate-900 dark:text-white">${val.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
                           <div className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-0.5">{asset.amount} {asset.coinSymbol}</div>
                         </td>
-                        <td className="px-6 py-4 text-right text-slate-600 dark:text-slate-300 whitespace-nowrap font-bold">
+                        <td className={`px-6 py-4 text-right whitespace-nowrap font-bold transition-colors duration-300 ${priceColor}`}>
                           {currentPrice ? `$${currentPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 })}` : '—'}
                         </td>
                         <td className="px-6 py-4 text-right text-slate-500 dark:text-slate-400 whitespace-nowrap font-bold">
