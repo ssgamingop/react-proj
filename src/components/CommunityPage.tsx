@@ -1,7 +1,10 @@
 import { TerminalLayout } from './TerminalLayout';
 import { Users, MessageSquare, Award, TrendingUp } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 export const CommunityPage = () => {
+  const showDevToast = () => toast('This feature is currently under development.', { icon: '🚧' });
+
   return (
     <TerminalLayout>
       <div className="flex flex-col gap-6 max-w-[1600px] mx-auto h-full animate-in fade-in duration-500">
@@ -15,7 +18,7 @@ export const CommunityPage = () => {
             </h2>
             <p className="text-slate-500 dark:text-slate-400 font-bold">See what top traders are doing and discuss market trends.</p>
           </div>
-          <button className="bg-primary hover:bg-primary-dark text-white rounded-xl px-6 py-2.5 text-sm font-extrabold flex items-center gap-2 transition-colors shadow-[0_0_15px_rgba(99,102,241,0.3)]">
+          <button onClick={showDevToast} className="bg-primary hover:bg-primary-dark text-white rounded-xl px-6 py-2.5 text-sm font-extrabold flex items-center gap-2 transition-colors shadow-[0_0_15px_rgba(99,102,241,0.3)]">
             <MessageSquare className="w-4 h-4" /> Start Discussion
           </button>
         </div>

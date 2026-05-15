@@ -1,8 +1,11 @@
 import { TerminalLayout } from './TerminalLayout';
 import { BookOpen, Search, Filter, ArrowRight } from 'lucide-react';
 import { NewsWidget } from './NewsWidget';
+import toast from 'react-hot-toast';
 
 export const ResearchPage = () => {
+  const showDevToast = () => toast('This feature is currently under development.', { icon: '🚧' });
+
   return (
     <TerminalLayout>
       <div className="flex flex-col gap-6 max-w-[1600px] mx-auto h-full animate-in fade-in duration-500">
@@ -22,7 +25,7 @@ export const ResearchPage = () => {
                <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                <input type="text" placeholder="Search reports..." className="bg-white/80 dark:bg-[#131722]/80 backdrop-blur-xl border border-slate-200 dark:border-slate-800/60 rounded-xl pl-9 pr-4 py-2 text-sm font-bold outline-none focus:border-primary transition-colors" />
              </div>
-             <button className="bg-white/80 dark:bg-[#131722]/80 backdrop-blur-xl border border-slate-200 dark:border-slate-800/60 rounded-xl px-4 py-2 text-sm font-bold flex items-center gap-2 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+             <button onClick={showDevToast} className="bg-white/80 dark:bg-[#131722]/80 backdrop-blur-xl border border-slate-200 dark:border-slate-800/60 rounded-xl px-4 py-2 text-sm font-bold flex items-center gap-2 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
                <Filter className="w-4 h-4" /> Filter
              </button>
           </div>
