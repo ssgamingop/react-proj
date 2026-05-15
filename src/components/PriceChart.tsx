@@ -49,7 +49,7 @@ export const PriceChart: React.FC<PriceChartProps> = ({ symbol = 'BTC' }) => {
   // we'll rely on the parent wrapper mostly. We'll use slate-400 for text which works in both.
 
   return (
-    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm p-6 h-[420px] flex flex-col transition-colors">
+    <div className="bg-white dark:bg-[#131722] border border-slate-200 dark:border-slate-800/60 rounded-2xl shadow-sm p-6 h-[420px] flex flex-col transition-colors">
       <div className="flex justify-between items-center mb-8">
         <div>
           <h2 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
