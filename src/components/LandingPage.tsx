@@ -95,7 +95,7 @@ export const LandingPage: React.FC = () => {
           <div className="mt-16 relative animate-in fade-in zoom-in-95 duration-1000 delay-500 max-w-5xl mx-auto">
             <div className="relative bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-2 md:p-4 shadow-2xl overflow-hidden ring-1 ring-slate-900/5 dark:ring-white/10">
               <img 
-                src="src/assets/landing.png" 
+                src="https://github.com/ssgamingop/react-proj/blob/main/src/assets/landing.png?raw=true" 
                 alt="Dashboard Preview" 
                 className="rounded-xl w-full h-auto object-cover opacity-90 border border-slate-100 dark:border-slate-800"
               />
