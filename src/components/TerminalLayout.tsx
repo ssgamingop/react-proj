@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Logo } from './Logo';
+import { Toaster } from 'react-hot-toast';
 import { 
   Sun, Moon, Search, Home, Activity, PieChart, 
   BookOpen, Radio, Users, Bell, BarChart2, Zap
@@ -8,6 +9,7 @@ import {
 
 export const TerminalLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isDark, setIsDark] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     if (document.documentElement.classList.contains('dark')) {
@@ -27,17 +29,30 @@ export const TerminalLayout: React.FC<{ children: React.ReactNode }> = ({ childr
 
   const navItems = [
     { icon: <Home size={20} />, label: 'Dashboard', path: '/dashboard' },
-    { icon: <BookOpen size={20} />, label: 'Research', path: '#' },
-    { icon: <Activity size={20} />, label: 'Monitoring', path: '#' },
-    { icon: <PieChart size={20} />, label: 'Portfolio', path: '#' },
-    { icon: <Radio size={20} />, label: 'Signals', path: '#' },
-    { icon: <Bell size={20} />, label: 'Alerts', path: '#' },
-    { icon: <BarChart2 size={20} />, label: 'Screener', path: '#' },
-    { icon: <Users size={20} />, label: 'Community', path: '#' },
+    { icon: <BookOpen size={20} />, label: 'Research', path: '/research' },
+    { icon: <Activity size={20} />, label: 'Monitoring', path: '/monitoring' },
+    { icon: <PieChart size={20} />, label: 'Portfolio', path: '/portfolio' },
+    { icon: <Radio size={20} />, label: 'Signals', path: '/signals' },
+    { icon: <Bell size={20} />, label: 'Alerts', path: '/alerts' },
+    { icon: <BarChart2 size={20} />, label: 'Screener', path: '/screener' },
+    { icon: <Users size={20} />, label: 'Community', path: '/community' },
   ];
 
-  return (
     <div className="flex h-screen overflow-hidden bg-slate-50 dark:bg-[#0b0e14] text-slate-900 dark:text-slate-100 font-sans transition-colors duration-300 relative">
+      <Toaster 
+        position="bottom-right" 
+        toastOptions={{
+          style: { 
+            background: document.documentElement.classList.contains('dark') ? '#0f172a' : '#ffffff', 
+            color: document.documentElement.classList.contains('dark') ? '#f8fafc' : '#0f172a', 
+            border: '1px solid ' + (document.documentElement.classList.contains('dark') ? '#1e293b' : '#e2e8f0'),
+            borderRadius: '12px',
+            fontSize: '13px',
+            fontWeight: '600',
+            boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)'
+          }
+        }} 
+      />
       {/* Background Glow Effects */}
       <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-primary/20 blur-[150px] pointer-events-none z-0 hidden dark:block" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-indigo-500/10 blur-[150px] pointer-events-none z-0 hidden dark:block" />
@@ -62,7 +77,7 @@ export const TerminalLayout: React.FC<{ children: React.ReactNode }> = ({ childr
         <nav className="flex-1 overflow-y-auto pb-4 scrollbar-hide px-2 lg:px-4">
           <ul className="space-y-1">
             {navItems.map((item, i) => {
-              const isActive = i === 0; // Highlight first item for demo
+              const isActive = location.pathname.includes(item.path) || (location.pathname === '/' && item.path === '/dashboard'); 
               return (
                 <li key={i}>
                   <Link 
