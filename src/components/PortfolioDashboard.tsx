@@ -80,26 +80,26 @@ export const PortfolioDashboard: React.FC = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold text-white flex items-center gap-3">
-            <div className="bg-primary/20 p-2 rounded-lg">
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-3">
+            <div className="bg-primary/10 dark:bg-primary/20 p-2 rounded-lg">
               <Wallet className="w-6 h-6 text-primary" />
             </div>
             Portfolio Overview
           </h2>
-          <p className="text-slate-400 text-sm mt-1">Manage and track your crypto holdings</p>
+          <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">Manage and track your crypto holdings</p>
         </div>
         <button 
           onClick={() => setIsAdding(!isAdding)}
-          className="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-xl transition-all flex items-center gap-2 text-sm font-semibold shadow-lg shadow-primary/20"
+          className="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-xl transition-all flex items-center gap-2 text-sm font-semibold shadow-md"
         >
           <Plus className="w-4 h-4" /> Add Asset
         </button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-sm">
-          <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">Total Balance</p>
-          <p className="text-3xl font-bold text-white">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm transition-colors">
+          <p className="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">Total Balance</p>
+          <p className="text-3xl font-bold text-slate-900 dark:text-white">
             ${totals.value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </p>
           <div className="mt-4 flex items-center gap-2">
@@ -107,14 +107,14 @@ export const PortfolioDashboard: React.FC = () => {
           </div>
         </div>
         
-        <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-sm md:col-span-2 flex flex-col justify-between">
-          <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">Total Profit / Loss</p>
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm md:col-span-2 flex flex-col justify-between transition-colors">
+          <p className="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">Total Profit / Loss</p>
           <div className="flex items-end justify-between">
             <div className="space-y-1">
-              <p className={`text-3xl font-bold ${isProfitPositive ? 'text-emerald-400' : 'text-rose-400'}`}>
+              <p className={`text-3xl font-bold ${isProfitPositive ? 'text-emerald-500 dark:text-emerald-400' : 'text-rose-500 dark:text-rose-400'}`}>
                 {isProfitPositive ? '+' : ''}${Math.abs(totals.profit).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </p>
-              <div className={`inline-flex items-center text-sm font-bold px-2 py-0.5 rounded-full ${isProfitPositive ? 'bg-emerald-400/10 text-emerald-400' : 'bg-rose-400/10 text-rose-400'}`}>
+              <div className={`inline-flex items-center text-sm font-bold px-2 py-0.5 rounded-full ${isProfitPositive ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-400/10 dark:text-emerald-400' : 'bg-rose-100 text-rose-600 dark:bg-rose-400/10 dark:text-rose-400'}`}>
                 {isProfitPositive ? <TrendingUp className="w-3.5 h-3.5 mr-1" /> : <TrendingDown className="w-3.5 h-3.5 mr-1" />}
                 {Math.abs(totals.profitPct).toFixed(2)}%
               </div>
@@ -128,16 +128,16 @@ export const PortfolioDashboard: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-sm">
-          <div className="p-6 border-b border-slate-800 flex justify-between items-center">
-            <h3 className="font-bold text-white flex items-center gap-2">
+        <div className="lg:col-span-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm transition-colors">
+          <div className="p-6 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
+            <h3 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
               <BarChart3 className="w-4 h-4 text-primary" />
               Your Assets
             </h3>
           </div>
           <div className="table-container">
             <table className="w-full text-left text-sm border-collapse min-w-[500px]">
-              <thead className="text-xs uppercase text-slate-500 bg-slate-800/30">
+              <thead className="text-xs uppercase text-slate-500 bg-slate-50 dark:bg-slate-800/30">
                 <tr>
                   <th className="px-6 py-4 font-semibold whitespace-nowrap">Asset</th>
                   <th className="px-6 py-4 font-semibold text-right whitespace-nowrap">Balance</th>
@@ -147,7 +147,7 @@ export const PortfolioDashboard: React.FC = () => {
                   <th className="px-6 py-4"></th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800">
+              <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
                 {assets.length === 0 ? (
                   <tr>
                     <td colSpan={6} className="px-6 py-12 text-center text-slate-500">
@@ -164,21 +164,21 @@ export const PortfolioDashboard: React.FC = () => {
                     const isAssetProfit = profit >= 0;
 
                     return (
-                      <tr key={asset.id} className="group hover:bg-white/[0.02] transition-colors">
+                      <tr key={asset.id} className="group hover:bg-slate-50 dark:hover:bg-white/[0.02] transition-colors">
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="font-bold text-white">{asset.coinSymbol}</div>
+                          <div className="font-bold text-slate-900 dark:text-white">{asset.coinSymbol}</div>
                         </td>
                         <td className="px-6 py-4 text-right whitespace-nowrap">
-                          <div className="font-medium text-white">${val.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+                          <div className="font-medium text-slate-900 dark:text-white">${val.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
                           <div className="text-[10px] text-slate-500 font-bold uppercase tracking-tight">{asset.amount} {asset.coinSymbol}</div>
                         </td>
-                        <td className="px-6 py-4 text-right text-slate-300 whitespace-nowrap font-medium">
+                        <td className="px-6 py-4 text-right text-slate-600 dark:text-slate-300 whitespace-nowrap font-medium">
                           {currentPrice ? `$${currentPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 })}` : '—'}
                         </td>
-                        <td className="px-6 py-4 text-right text-slate-400 whitespace-nowrap font-medium">
+                        <td className="px-6 py-4 text-right text-slate-500 dark:text-slate-400 whitespace-nowrap font-medium">
                           ${asset.buyPrice.toLocaleString()}
                         </td>
-                        <td className={`px-6 py-4 text-right font-bold whitespace-nowrap ${isAssetProfit ? 'text-emerald-400' : 'text-rose-400'}`}>
+                        <td className={`px-6 py-4 text-right font-bold whitespace-nowrap ${isAssetProfit ? 'text-emerald-500 dark:text-emerald-400' : 'text-rose-500 dark:text-rose-400'}`}>
                           <div className="flex flex-col items-end">
                             <span>{isAssetProfit ? '+' : ''}{profitPct.toFixed(2)}%</span>
                             <span className="text-[10px] opacity-70 font-bold uppercase tracking-tighter">
@@ -189,7 +189,7 @@ export const PortfolioDashboard: React.FC = () => {
                         <td className="px-6 py-4 text-right whitespace-nowrap">
                           <button 
                             onClick={() => removeAsset(asset.id)}
-                            className="text-slate-600 hover:text-rose-500 transition-colors p-2"
+                            className="text-slate-400 hover:text-rose-500 transition-colors p-2"
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -203,8 +203,8 @@ export const PortfolioDashboard: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-sm">
-          <h3 className="font-bold text-white flex items-center gap-2 mb-6">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm transition-colors">
+          <h3 className="font-bold text-slate-900 dark:text-white flex items-center gap-2 mb-6">
             <PieChartIcon className="w-4 h-4 text-primary" />
             Asset Allocation
           </h3>
@@ -226,7 +226,7 @@ export const PortfolioDashboard: React.FC = () => {
                     ))}
                   </Pie>
                   <Tooltip 
-                    contentStyle={{ backgroundColor: '#0f172a', border: '1px solid #1e293b', borderRadius: '8px' }}
+                    contentStyle={{ backgroundColor: 'var(--tw-colors-slate-900)', border: 'none', borderRadius: '8px', color: '#fff' }}
                     itemStyle={{ color: '#fff' }}
                     formatter={(value: any) => [`$${Number(value).toLocaleString()}`, 'Value']}
                   />
@@ -244,14 +244,14 @@ export const PortfolioDashboard: React.FC = () => {
       </div>
 
       {isAdding && (
-        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-slate-900/50 dark:bg-slate-950/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
           <form 
             onSubmit={handleAddAsset} 
-            className="bg-slate-900 border border-slate-800 p-8 rounded-3xl shadow-2xl max-w-md w-full space-y-6"
+            className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-8 rounded-3xl shadow-2xl max-w-md w-full space-y-6"
           >
             <div>
-              <h3 className="text-xl font-bold text-white mb-1">Add New Asset</h3>
-              <p className="text-slate-400 text-sm">Enter the details of your purchase</p>
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-1">Add New Asset</h3>
+              <p className="text-slate-500 dark:text-slate-400 text-sm">Enter the details of your purchase</p>
             </div>
             
             <div className="space-y-4">
@@ -262,7 +262,7 @@ export const PortfolioDashboard: React.FC = () => {
                   placeholder="e.g. BTC" 
                   value={newAsset.symbol}
                   onChange={e => setNewAsset({...newAsset, symbol: e.target.value})}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white outline-none focus:border-primary transition-colors font-medium"
+                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-3 text-slate-900 dark:text-white outline-none focus:border-primary transition-colors font-medium"
                   required 
                 />
               </div>
@@ -275,7 +275,7 @@ export const PortfolioDashboard: React.FC = () => {
                     step="any"
                     value={newAsset.amount}
                     onChange={e => setNewAsset({...newAsset, amount: e.target.value})}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white outline-none focus:border-primary transition-colors font-medium"
+                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-3 text-slate-900 dark:text-white outline-none focus:border-primary transition-colors font-medium"
                     required 
                   />
                 </div>
@@ -287,7 +287,7 @@ export const PortfolioDashboard: React.FC = () => {
                     step="any"
                     value={newAsset.price}
                     onChange={e => setNewAsset({...newAsset, price: e.target.value})}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white outline-none focus:border-primary transition-colors font-medium"
+                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-3 text-slate-900 dark:text-white outline-none focus:border-primary transition-colors font-medium"
                     required 
                   />
                 </div>
@@ -298,13 +298,13 @@ export const PortfolioDashboard: React.FC = () => {
               <button 
                 type="button"
                 onClick={() => setIsAdding(false)}
-                className="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 px-4 rounded-xl transition-colors"
+                className="flex-1 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-bold py-3 px-4 rounded-xl transition-colors"
               >
                 Cancel
               </button>
               <button 
                 type="submit" 
-                className="flex-1 bg-primary hover:bg-primary-dark text-white font-bold py-3 px-4 rounded-xl shadow-lg shadow-primary/20 transition-all"
+                className="flex-1 bg-primary hover:bg-primary-dark text-white font-bold py-3 px-4 rounded-xl shadow-md transition-all"
               >
                 Add to Portfolio
               </button>
