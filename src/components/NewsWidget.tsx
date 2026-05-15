@@ -68,7 +68,7 @@ export const NewsWidget: React.FC = () => {
         </button>
       </div>
       
-      <div className="flex-1 min-h-0 overflow-y-auto pr-1 -mr-1 space-y-4 scrollbar-hide">
+      <div className="flex-1 min-h-0 overflow-y-auto pr-1 -mr-1 space-y-4 scrollbar-hide relative z-0">
         {loading ? (
           <div className="space-y-4">
             {[1, 2, 3, 4].map(i => (
