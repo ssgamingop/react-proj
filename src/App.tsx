@@ -20,7 +20,7 @@ function App() {
   }, [connectWebSocket, disconnectWebSocket]);
 
   return (
-    <Router basename="/react-proj">
+    <Router basename={import.meta.env.BASE_URL}>
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
