@@ -30,59 +30,55 @@ export const DashboardPage = () => {
         <div className="grid grid-cols-1 xl:grid-cols-12 gap-4 min-h-[400px]">
           {/* Main Chart Area */}
           <div className="xl:col-span-8 flex flex-col gap-4">
-            <section className="flex-1 bg-white dark:bg-[#131722] border border-slate-200 dark:border-slate-800/60 rounded-xl overflow-hidden shadow-sm">
-              <PriceChart symbol="BTC" />
-            </section>
+            <PriceChart symbol="BTC" />
           </div>
           
           {/* Right Sidebar Area */}
           <div className="xl:col-span-4 flex flex-col gap-4">
-            <section className="flex-1 flex flex-col gap-4">
-              <div className="bg-white dark:bg-[#131722] border border-slate-200 dark:border-slate-800/60 rounded-xl p-4 shadow-sm">
-                <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-3">Market Overview 24H</h3>
-                <div className="grid grid-cols-3 gap-2">
-                  <div>
-                    <p className="text-[10px] text-slate-500 font-medium">Marketcap</p>
-                    <p className="text-sm font-bold text-slate-900 dark:text-white">$2.71T</p>
-                    <p className="text-[10px] text-rose-500 font-bold">↓ 2.31%</p>
-                  </div>
-                  <div>
-                    <p className="text-[10px] text-slate-500 font-medium">Volume</p>
-                    <p className="text-sm font-bold text-slate-900 dark:text-white">$163B</p>
-                    <p className="text-[10px] text-emerald-500 font-bold">↑ 31.91%</p>
-                  </div>
-                  <div>
-                    <p className="text-[10px] text-slate-500 font-medium">Dominance</p>
-                    <p className="text-sm font-bold text-slate-900 dark:text-white">58.57%</p>
-                    <p className="text-[10px] text-rose-500 font-bold">↓ 0.04%</p>
-                  </div>
+            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
+              <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-4">Market Overview 24H</h3>
+              <div className="grid grid-cols-3 gap-2">
+                <div>
+                  <p className="text-[10px] text-slate-500 font-medium">Marketcap</p>
+                  <p className="text-sm font-bold text-slate-900 dark:text-white">$2.71T</p>
+                  <p className="text-[10px] text-rose-500 font-bold">↓ 2.31%</p>
+                </div>
+                <div>
+                  <p className="text-[10px] text-slate-500 font-medium">Volume</p>
+                  <p className="text-sm font-bold text-slate-900 dark:text-white">$163B</p>
+                  <p className="text-[10px] text-emerald-500 font-bold">↑ 31.91%</p>
+                </div>
+                <div>
+                  <p className="text-[10px] text-slate-500 font-medium">Dominance</p>
+                  <p className="text-sm font-bold text-slate-900 dark:text-white">58.57%</p>
+                  <p className="text-[10px] text-rose-500 font-bold">↓ 0.04%</p>
                 </div>
               </div>
-              <div className="flex-1 min-h-[250px]">
-                <NewsWidget />
-              </div>
-            </section>
+            </div>
+            <div className="flex-1 min-h-[300px]">
+              <NewsWidget />
+            </div>
           </div>
         </div>
 
         {/* Bottom Row: Market Table & Other Widgets */}
-        <div className="grid grid-cols-1 xl:grid-cols-12 gap-4">
+        <div className="grid grid-cols-1 xl:grid-cols-12 gap-4 pb-12">
           <div className="xl:col-span-4 flex flex-col gap-4">
             <WatchlistWidget />
             <AlertsWidget />
           </div>
           <div className="xl:col-span-8 flex flex-col gap-4">
-            <section className="bg-white dark:bg-[#131722] border border-slate-200 dark:border-slate-800/60 rounded-xl overflow-hidden shadow-sm">
-              <div className="p-4 border-b border-slate-200 dark:border-slate-800/60 flex items-center justify-between">
+            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm">
+              <div className="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
                 <h3 className="text-sm font-bold text-slate-900 dark:text-white">Top Assets</h3>
               </div>
-              <div className="p-0">
+              <div className="p-0 border-t-0 border-slate-200 dark:border-slate-800 [&>.bg-white]:border-none [&>.bg-white]:shadow-none [&>.bg-white]:rounded-none">
                 <MarketTable />
               </div>
-            </section>
-            <section className="bg-white dark:bg-[#131722] border border-slate-200 dark:border-slate-800/60 rounded-xl p-4 shadow-sm">
+            </div>
+            <div className="mt-4">
               <PortfolioDashboard />
-            </section>
+            </div>
           </div>
         </div>
       </div>
