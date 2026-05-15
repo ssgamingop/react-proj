@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Logo } from './Logo';
 import { 
   Sun, Moon, Search, Home, Activity, PieChart, 
@@ -8,7 +8,6 @@ import {
 
 export const TerminalLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isDark, setIsDark] = useState(false);
-  const location = useLocation();
 
   useEffect(() => {
     if (document.documentElement.classList.contains('dark')) {
