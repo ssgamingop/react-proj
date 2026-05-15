@@ -97,7 +97,7 @@ export const PortfolioDashboard: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm transition-colors">
+        <div className="bg-white dark:bg-[#131722] border border-slate-200 dark:border-slate-800/60 p-6 rounded-2xl shadow-sm transition-colors">
           <p className="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">Total Balance</p>
           <p className="text-3xl font-bold text-slate-900 dark:text-white">
             ${totals.value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
