@@ -65,20 +65,20 @@ export const MarketTable: React.FC = () => {
 
   return (
     <div className="space-y-4">
-      <div className="table-container bg-white dark:bg-[#131722] border border-slate-200 dark:border-slate-800/60 rounded-2xl shadow-sm transition-colors">
+      <div className="table-container bg-white/80 dark:bg-[#131722]/80 backdrop-blur-xl border border-slate-200 dark:border-slate-800/60 rounded-3xl shadow-sm transition-colors hover:shadow-md duration-300">
         <table className="w-full text-left text-sm border-collapse min-w-[600px]">
-          <thead className="bg-slate-50 dark:bg-slate-800/40 text-[10px] font-bold uppercase tracking-widest text-slate-500 border-b border-slate-200 dark:border-slate-800">
+          <thead className="bg-slate-50/50 dark:bg-slate-800/20 text-[10px] font-extrabold uppercase tracking-widest text-slate-500 border-b border-slate-200 dark:border-slate-800/60">
             <tr>
-              <th className="px-6 py-4 w-12 text-center"></th>
-              <th className="px-6 py-4 w-12 text-center">#</th>
-              <th className="px-6 py-4 whitespace-nowrap">Coin</th>
-              <th className="px-6 py-4 text-right whitespace-nowrap">Price</th>
-              <th className="px-6 py-4 text-right whitespace-nowrap">24h Change</th>
-              <th className="px-6 py-4 text-right hidden lg:table-cell whitespace-nowrap">Market Cap</th>
-              <th className="px-6 py-4 text-right hidden xl:table-cell whitespace-nowrap">Volume (24h)</th>
+              <th className="px-6 py-5 w-12 text-center"></th>
+              <th className="px-6 py-5 w-16 text-center">#</th>
+              <th className="px-6 py-5 whitespace-nowrap w-1/3">Coin</th>
+              <th className="px-6 py-5 text-right whitespace-nowrap">Price</th>
+              <th className="px-6 py-5 text-right whitespace-nowrap">24h Change</th>
+              <th className="px-6 py-5 text-right hidden lg:table-cell whitespace-nowrap">Market Cap</th>
+              <th className="px-6 py-5 text-right hidden xl:table-cell whitespace-nowrap">Volume (24h)</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
+          <tbody className="divide-y divide-slate-100 dark:divide-slate-800/40">
             {coins.map((coin, index) => {
               const isFavorite = favorites.includes(coin.CoinInfo.Name);
               const price = coin.DISPLAY?.USD?.PRICE || '$0.00';
@@ -90,52 +90,51 @@ export const MarketTable: React.FC = () => {
 
               return (
                 <tr key={coin.CoinInfo.Id} className="group hover:bg-slate-50 dark:hover:bg-white/[0.02] transition-colors cursor-pointer">
-                  <td className="px-6 py-4 text-center">
+                  <td className="px-6 py-4 w-12 text-center" onClick={(e) => e.stopPropagation()}>
                     <button 
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        toggleFavorite(coin.CoinInfo.Name);
-                      }}
-                      className="focus:outline-none transition-transform hover:scale-110 active:scale-95"
+                      onClick={() => toggleFavorite(coin.CoinInfo.Name)}
+                      className="text-slate-300 dark:text-slate-600 hover:text-amber-400 dark:hover:text-amber-400 focus:outline-none transition-transform hover:scale-110 active:scale-95"
                     >
-                      {isFavorite ? (
-                        <Star className="w-4 h-4 text-yellow-500 fill-yellow-500 shadow-sm" />
-                      ) : (
-                        <Star className="w-4 h-4 text-slate-400 dark:text-slate-600 hover:text-slate-600 dark:hover:text-slate-400" />
-                      )}
+                      <Star className={`w-4 h-4 ${isFavorite ? 'fill-amber-400 text-amber-400' : ''}`} />
                     </button>
                   </td>
-                  <td className="px-6 py-4 text-center font-mono text-slate-500 text-[10px] font-bold">
+                  <td className="px-6 py-4 w-16 text-center font-mono text-slate-400 dark:text-slate-500 text-xs font-bold">
                     {(page * itemsPerPage) + index + 1}
                   </td>
                   <td className="px-6 py-4 no-wrap-cell">
-                    <div className="flex items-center gap-3">
-                      <div className="relative shrink-0">
+                    <div className="flex items-center gap-4">
+                      <div className="relative shrink-0 group-hover:scale-105 transition-transform">
                         <img 
                           src={`https://www.cryptocompare.com${coin.CoinInfo.ImageUrl}`} 
                           alt={coin.CoinInfo.Name} 
-                          className="w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-800 p-0.5"
+                          className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 p-0.5 shadow-sm"
                         />
+                        <div className="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-white dark:bg-[#131722] rounded-full flex items-center justify-center">
+                           <div className={`w-2 h-2 rounded-full ${isPositive ? 'bg-emerald-500' : 'bg-rose-500'}`}></div>
+                        </div>
                       </div>
                       <div className="flex flex-col min-w-0">
-                        <span className="font-bold text-slate-900 dark:text-white truncate max-w-[100px] sm:max-w-none">{coin.CoinInfo.FullName}</span>
-                        <span className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">{coin.CoinInfo.Name}</span>
+                        <span className="font-extrabold text-slate-900 dark:text-white truncate text-base tracking-tight">{coin.CoinInfo.FullName}</span>
+                        <span className="text-[10px] text-slate-500 font-bold uppercase tracking-widest flex items-center gap-1 mt-0.5">
+                          <span className="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-[8px] text-slate-400">{(page * itemsPerPage) + index + 1}</span>
+                          {coin.CoinInfo.Name}
+                        </span>
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 text-right no-wrap-cell font-bold text-slate-900 dark:text-slate-200">
+                  <td className="px-6 py-4 text-right no-wrap-cell font-extrabold text-slate-900 dark:text-white text-base tracking-tight">
                     {price}
                   </td>
-                  <td className={`px-6 py-4 text-right no-wrap-cell font-bold ${isPositive ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}`}>
-                    <div className="inline-flex items-center gap-1">
-                      {isPositive ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
+                  <td className={`px-6 py-4 text-right no-wrap-cell font-bold ${isPositive ? 'text-emerald-500' : 'text-rose-500'}`}>
+                    <div className="inline-flex items-center gap-1.5">
+                      {isPositive ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
                       <span>{Math.abs(parseFloat(changeStr)).toFixed(2)}%</span>
                     </div>
                   </td>
-                  <td className="px-6 py-4 text-right no-wrap-cell text-slate-600 dark:text-slate-400 hidden lg:table-cell font-bold text-[11px]">
+                  <td className="px-6 py-4 text-right no-wrap-cell text-slate-600 dark:text-slate-300 hidden lg:table-cell font-semibold text-sm">
                     {mktCap}
                   </td>
-                  <td className="px-6 py-4 text-right no-wrap-cell text-slate-500 dark:text-slate-500 hidden xl:table-cell font-mono text-[10px] font-bold">
+                  <td className="px-6 py-4 text-right no-wrap-cell text-slate-500 dark:text-slate-400 hidden xl:table-cell font-semibold text-sm">
                     {volume}
                   </td>
                 </tr>
