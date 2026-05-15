@@ -62,25 +62,25 @@ export const AlertsWidget: React.FC = () => {
   };
 
   return (
-    <div className="bg-white dark:bg-[#131722] border border-slate-200 dark:border-slate-800/60 rounded-2xl shadow-sm p-6 transition-colors">
+    <div className="bg-white/80 dark:bg-[#131722]/80 backdrop-blur-xl border border-slate-200 dark:border-slate-800/60 rounded-3xl shadow-[0_4px_24px_rgba(0,0,0,0.02)] dark:shadow-none p-6 transition-colors hover:shadow-md duration-300">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-          <div className="bg-emerald-100 dark:bg-emerald-400/10 p-1.5 rounded-lg">
-            <Bell className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+        <h2 className="text-xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2 tracking-tight">
+          <div className="bg-emerald-100 dark:bg-emerald-400/10 p-1.5 rounded-xl">
+            <Bell className="w-5 h-5 text-emerald-500 fill-emerald-500/20" />
           </div>
           Price Alerts
         </h2>
         <button 
           onClick={() => setIsAdding(!isAdding)}
-          className="bg-slate-50 hover:bg-slate-100 dark:bg-white/5 dark:hover:bg-white/10 p-2 rounded-xl border border-slate-200 dark:border-white/5 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-all shadow-sm"
+          className="p-2 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 rounded-full transition-colors"
         >
-          <Plus className="w-4 h-4" />
+          {isAdding ? <X className="w-4 h-4 text-slate-500" /> : <Plus className="w-4 h-4 text-slate-500" />}
         </button>
       </div>
 
       {isAdding && (
-        <form onSubmit={handleAdd} className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 rounded-xl mb-6 space-y-4 shadow-sm">
-          <div className="grid grid-cols-2 gap-3">
+        <form onSubmit={handleAdd} className="mb-6 p-5 bg-slate-50/50 dark:bg-black/20 border border-slate-200 dark:border-slate-800/80 rounded-2xl space-y-4 animate-in slide-in-from-top-2 shadow-sm">
+          <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1.5">
               <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest ml-1">Symbol</label>
               <input
@@ -88,7 +88,7 @@ export const AlertsWidget: React.FC = () => {
                 placeholder="BTC"
                 value={newSymbol}
                 onChange={e => setNewSymbol(e.target.value)}
-                className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg px-3 py-2 text-slate-900 dark:text-white w-full outline-none focus:border-primary transition-colors text-sm font-bold"
+                className="bg-white dark:bg-[#131722] border border-slate-200 dark:border-slate-800/60 rounded-xl px-4 py-2 text-slate-900 dark:text-white w-full outline-none focus:ring-2 focus:ring-primary/20 transition-all text-sm font-bold shadow-inner"
                 required
               />
             </div>
@@ -100,21 +100,21 @@ export const AlertsWidget: React.FC = () => {
                 step="any"
                 value={newPrice}
                 onChange={e => setNewPrice(e.target.value)}
-                className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg px-3 py-2 text-slate-900 dark:text-white w-full outline-none focus:border-primary transition-colors text-sm font-bold"
+                className="bg-white dark:bg-[#131722] border border-slate-200 dark:border-slate-800/60 rounded-xl px-4 py-2 text-slate-900 dark:text-white w-full outline-none focus:ring-2 focus:ring-primary/20 transition-all text-sm font-bold shadow-inner"
                 required
               />
             </div>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-3">
             <select
               value={newCondition}
               onChange={e => setNewCondition(e.target.value as 'above' | 'below')}
-              className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg px-3 py-2 text-slate-900 dark:text-white flex-1 outline-none text-xs font-bold appearance-none cursor-pointer"
+              className="bg-white dark:bg-[#131722] border border-slate-200 dark:border-slate-800/60 rounded-xl px-4 py-2 text-slate-900 dark:text-white flex-1 outline-none text-xs font-bold appearance-none cursor-pointer shadow-inner"
             >
               <option value="above">Above Target</option>
               <option value="below">Below Target</option>
             </select>
-            <button type="submit" className="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg font-bold text-xs transition-all shadow-md">
+            <button type="submit" className="bg-gradient-to-r from-primary to-indigo-600 hover:from-primary-dark hover:to-indigo-700 text-white px-6 py-2.5 rounded-xl font-bold text-xs transition-all shadow-[0_0_15px_rgba(99,102,241,0.3)] hover:-translate-y-0.5">
               Create
             </button>
           </div>
@@ -122,32 +122,46 @@ export const AlertsWidget: React.FC = () => {
       )}
 
       {alerts.length === 0 ? (
-        <div className="text-center py-6 px-4 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-xl">
+        <div className="text-center py-6 px-4 border-2 border-dashed border-slate-200 dark:border-slate-800/60 rounded-xl">
           <p className="text-slate-500 dark:text-slate-600 text-xs font-bold uppercase tracking-widest">No Active Alerts</p>
         </div>
       ) : (
-        <div className="space-y-2">
+        <div className="space-y-3">
           {alerts.map(alert => (
-            <div key={alert.id} className="group flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl hover:border-slate-300 dark:hover:border-slate-700 transition-all shadow-sm">
-              <div className="flex items-center gap-3">
+            <div 
+              key={alert.id} 
+              className={`group flex items-center justify-between p-4 rounded-2xl border transition-all cursor-pointer ${
+                alert.isActive 
+                  ? 'bg-emerald-50 dark:bg-emerald-400/5 border-emerald-100 dark:border-emerald-500/20' 
+                  : 'bg-slate-50/50 dark:bg-black/20 border-slate-100 dark:border-slate-800/80 hover:bg-white dark:hover:bg-white/5 shadow-sm'
+              }`}
+              onClick={() => toggleAlertActive(alert.id)}
+            >
+              <div className="flex items-center gap-4">
                 <button 
-                  onClick={() => toggleAlertActive(alert.id)} 
-                  className={`p-1 rounded-lg transition-colors ${alert.isActive ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-400/10 dark:text-emerald-400' : 'bg-slate-200 text-slate-500 dark:bg-slate-800 dark:text-slate-600'}`}
+                  className={`w-10 h-10 flex items-center justify-center rounded-xl transition-colors shrink-0 ${
+                    alert.isActive 
+                      ? 'bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.2)]' 
+                      : 'bg-white dark:bg-[#131722] text-slate-400 dark:text-slate-500 border border-slate-200 dark:border-slate-800/60'
+                  }`}
                 >
-                  {alert.isActive ? <BellRing className="w-3.5 h-3.5" /> : <Bell className="w-3.5 h-3.5" />}
+                  {alert.isActive ? <BellRing className="w-4 h-4 fill-emerald-500/20" /> : <Bell className="w-4 h-4" />}
                 </button>
                 <div className="flex flex-col">
-                  <span className="font-bold text-slate-900 dark:text-white text-xs leading-none">{alert.coinSymbol}</span>
-                  <span className="text-[10px] text-slate-500 font-bold uppercase tracking-tighter mt-1">
-                    {alert.condition === 'above' ? 'Higher than' : 'Lower than'} ${alert.targetPrice.toLocaleString()}
+                  <span className="font-extrabold text-slate-900 dark:text-white text-base tracking-tight leading-none">{alert.coinSymbol}</span>
+                  <span className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-1">
+                    {alert.condition === 'above' ? 'Higher than' : 'Lower than'} <span className="text-slate-700 dark:text-slate-300">${alert.targetPrice.toLocaleString()}</span>
                   </span>
                 </div>
               </div>
               <button 
-                onClick={() => removeAlert(alert.id)} 
-                className="p-1.5 text-slate-400 hover:text-rose-600 dark:text-slate-700 dark:hover:text-rose-500 opacity-0 group-hover:opacity-100 transition-all"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  removeAlert(alert.id);
+                }} 
+                className="p-2 text-slate-400 hover:text-rose-600 dark:text-slate-600 dark:hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-xl transition-all opacity-0 group-hover:opacity-100"
               >
-                <Trash2 className="w-3.5 h-3.5" />
+                <Trash2 className="w-4 h-4" />
               </button>
             </div>
           ))}
