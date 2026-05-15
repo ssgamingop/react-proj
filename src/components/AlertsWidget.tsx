@@ -62,7 +62,7 @@ export const AlertsWidget: React.FC = () => {
   };
 
   return (
-    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm p-6 transition-colors">
+    <div className="bg-white dark:bg-[#131722] border border-slate-200 dark:border-slate-800/60 rounded-2xl shadow-sm p-6 transition-colors">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
           <div className="bg-emerald-100 dark:bg-emerald-400/10 p-1.5 rounded-lg">
