@@ -4,7 +4,7 @@ import { DashboardPage } from './components/DashboardPage';
 
 function App() {
   return (
-    <Router>
+    <Router basename="/react-proj">
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
