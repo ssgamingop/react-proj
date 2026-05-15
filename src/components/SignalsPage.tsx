@@ -1,7 +1,10 @@
 import { TerminalLayout } from './TerminalLayout';
 import { Radio, Crosshair, TrendingUp, BarChart2 } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 export const SignalsPage = () => {
+  const showDevToast = () => toast('This feature is currently under development.', { icon: '🚧' });
+
   return (
     <TerminalLayout>
       <div className="flex flex-col gap-6 max-w-[1600px] mx-auto h-full animate-in fade-in duration-500">
@@ -28,7 +31,7 @@ export const SignalsPage = () => {
                   { pair: "SOL/USDT", signal: "BUY", indicator: "Moving Average Breakout", timeframe: "1D", accuracy: "89%" },
                   { pair: "AVAX/USDT", signal: "NEUTRAL", indicator: "Bollinger Bands Squeeze", timeframe: "4H", accuracy: "65%" },
                 ].map((signal, i) => (
-                  <div key={i} className="flex items-center justify-between p-4 rounded-2xl border border-slate-100 dark:border-slate-800/60 bg-slate-50/50 dark:bg-white/[0.02] hover:bg-slate-100 dark:hover:bg-white/[0.04] transition-colors group cursor-pointer">
+                  <div key={i} onClick={showDevToast} className="flex items-center justify-between p-4 rounded-2xl border border-slate-100 dark:border-slate-800/60 bg-slate-50/50 dark:bg-white/[0.02] hover:bg-slate-100 dark:hover:bg-white/[0.04] transition-colors group cursor-pointer">
                     <div className="flex items-center gap-4">
                       <div className="bg-slate-200/50 dark:bg-slate-800 p-3 rounded-xl">
                         <Crosshair className="w-5 h-5 text-slate-500 group-hover:text-primary transition-colors" />
