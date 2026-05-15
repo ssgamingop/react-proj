@@ -100,17 +100,17 @@ export const NewsWidget: React.FC = () => {
                 href={article.link} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="flex gap-4 group p-2 -m-2 rounded-2xl hover:bg-slate-50 dark:hover:bg-white/[0.03] transition-all min-w-0"
+                className="flex gap-4 group p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-white/[0.03] transition-all min-w-0 border border-transparent dark:hover:border-slate-800/60"
               >
                 <div className="relative shrink-0">
                   {article.enclosure?.link ? (
                     <img 
                       src={article.enclosure.link} 
                       alt="" 
-                      className="w-16 h-16 object-cover rounded-xl bg-slate-100 dark:bg-slate-800 shadow-sm border border-slate-200 dark:border-slate-800"
+                      className="w-14 h-14 object-cover rounded-xl bg-slate-100 dark:bg-slate-800 shadow-sm border border-slate-200 dark:border-slate-800/60"
                     />
                   ) : (
-                    <div className="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-xl flex items-center justify-center border border-slate-200 dark:border-slate-800">
+                    <div className="w-14 h-14 bg-slate-100 dark:bg-slate-800 rounded-xl flex items-center justify-center border border-slate-200 dark:border-slate-800/60">
                       <Newspaper className="w-6 h-6 text-slate-400 dark:text-slate-700" />
                     </div>
                   )}
