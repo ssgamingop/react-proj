@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { cryptoApi } from '../services/api';
 import { useWatchlistStore } from '../store/useWatchlistStore';
+import { useMarketStore } from '../store/useMarketStore';
 import { Star, TrendingUp, TrendingDown, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface MarketData {
@@ -36,6 +37,7 @@ export const MarketTable: React.FC = () => {
   const [page, setPage] = useState(0);
   const itemsPerPage = 10;
   const { favorites, toggleFavorite } = useWatchlistStore();
+  const { prices } = useMarketStore();
 
   useEffect(() => {
     const fetchTopCoins = async () => {
@@ -65,7 +67,7 @@ export const MarketTable: React.FC = () => {
 
   return (
     <div className="space-y-4">
-      <div className="table-container bg-white/80 dark:bg-[#131722]/80 backdrop-blur-xl border border-slate-200 dark:border-slate-800/60 rounded-3xl shadow-sm transition-colors hover:shadow-md duration-300">
+      <div className="table-container overflow-x-auto scrollbar-hide bg-white/80 dark:bg-[#131722]/80 backdrop-blur-xl border border-slate-200 dark:border-slate-800/60 rounded-3xl shadow-sm transition-colors hover:shadow-md duration-300">
         <table className="w-full text-left text-sm border-collapse min-w-[600px]">
           <thead className="bg-slate-50/50 dark:bg-slate-800/20 text-[10px] font-extrabold uppercase tracking-widest text-slate-500 border-b border-slate-200 dark:border-slate-800/60">
             <tr>
@@ -86,7 +88,13 @@ export const MarketTable: React.FC = () => {
               const changeStr = coin.DISPLAY?.USD?.CHANGEPCT24HOUR || '0.00';
               const mktCap = coin.DISPLAY?.USD?.MKTCAP || '$0.00';
               const volume = coin.DISPLAY?.USD?.VOLUME24HOURTO || '$0.00';
-              const isPositive = rawChange >= 0;
+              
+              const liveData = prices[coin.CoinInfo.Name];
+              const displayPrice = liveData ? `$${liveData.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 })}` : price;
+              const priceColor = liveData?.direction === 'up' ? 'text-emerald-500 dark:text-emerald-400' : liveData?.direction === 'down' ? 'text-rose-500 dark:text-rose-400' : 'text-slate-900 dark:text-white';
+              
+              // We'll calculate a fresh change if live price exists and rawChange exists, but for simplicity let's stick to base change plus live direction color
+              const isPositive = liveData ? liveData.direction === 'up' || (liveData.direction === 'none' && rawChange >= 0) : rawChange >= 0;
 
               return (
                 <tr key={coin.CoinInfo.Id} className="group hover:bg-slate-50 dark:hover:bg-white/[0.02] transition-colors cursor-pointer">
@@ -110,7 +118,7 @@ export const MarketTable: React.FC = () => {
                           className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 p-0.5 shadow-sm"
                         />
                         <div className="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-white dark:bg-[#131722] rounded-full flex items-center justify-center">
-                           <div className={`w-2 h-2 rounded-full ${isPositive ? 'bg-emerald-500' : 'bg-rose-500'}`}></div>
+                           <div className={`w-2 h-2 rounded-full ${isPositive ? 'bg-emerald-500' : 'bg-rose-500'} ${liveData ? 'animate-pulse' : ''}`}></div>
                         </div>
                       </div>
                       <div className="flex flex-col min-w-0">
@@ -122,8 +130,8 @@ export const MarketTable: React.FC = () => {
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 text-right no-wrap-cell font-extrabold text-slate-900 dark:text-white text-base tracking-tight">
-                    {price}
+                  <td className={`px-6 py-4 text-right no-wrap-cell font-extrabold text-base tracking-tight transition-colors duration-300 ${priceColor}`}>
+                    {displayPrice}
                   </td>
                   <td className={`px-6 py-4 text-right no-wrap-cell font-bold ${isPositive ? 'text-emerald-500' : 'text-rose-500'}`}>
                     <div className="inline-flex items-center gap-1.5">
