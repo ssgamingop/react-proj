@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -5,12 +6,15 @@
   --color-primary-dark: #4f46e5; /* Indigo 600 */
   --color-secondary: #10b981; /* Emerald 500 */
   --color-slate-950: #020617;
+  --font-sans: 'Inter', sans-serif;
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 body {
-  @apply bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 antialiased selection:bg-primary/30 transition-colors duration-300;
+  @apply bg-slate-50 text-slate-900 dark:bg-[#0b0e14] dark:text-slate-100 font-sans antialiased selection:bg-primary/30 transition-colors duration-300;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .glow {
@@ -86,4 +90,12 @@ body {
 
 @keyframes textShine {
   to { background-position: 200% center; }
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
