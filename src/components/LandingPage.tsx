@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, BarChart3, Bell, Globe, LayoutDashboard, Shield, Cpu, Moon, Sun } from 'lucide-react';
+import { ArrowRight, BarChart3, Bell, Globe, Layout, Shield, Cpu, Moon, Sun } from 'lucide-react';
 import { Logo } from './Logo';
 
 export const LandingPage: React.FC = () => {
