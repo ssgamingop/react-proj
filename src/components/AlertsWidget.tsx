@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useAlertsStore } from '../store/useAlertsStore';
 import { cryptoApi } from '../services/api';
 import toast from 'react-hot-toast';
-import { Bell, BellRing, Plus, Trash2 } from 'lucide-react';
+import { Bell, BellRing, Plus, Trash2, X } from 'lucide-react';
 
 export const AlertsWidget: React.FC = () => {
   const { alerts, addAlert, removeAlert, toggleAlertActive } = useAlertsStore();
