@@ -51,7 +51,7 @@ export const NewsWidget: React.FC = () => {
   }, []);
 
   return (
-    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm p-6 overflow-hidden h-full flex flex-col transition-colors">
+    <div className="bg-white dark:bg-[#131722] border border-slate-200 dark:border-slate-800/60 rounded-2xl shadow-sm p-6 overflow-hidden h-full flex flex-col transition-colors">
       <div className="flex justify-between items-center mb-6 shrink-0">
         <h2 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2 whitespace-nowrap">
           <div className="bg-primary/10 p-1.5 rounded-lg shrink-0">
@@ -68,7 +68,7 @@ export const NewsWidget: React.FC = () => {
         </button>
       </div>
       
-      <div className="flex-1 overflow-y-auto pr-1 -mr-1 space-y-4">
+      <div className="flex-1 min-h-0 overflow-y-auto pr-1 -mr-1 space-y-4 scrollbar-hide">
         {loading ? (
           <div className="space-y-4">
             {[1, 2, 3, 4].map(i => (
