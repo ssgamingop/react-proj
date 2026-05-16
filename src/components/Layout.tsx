@@ -1,4 +1,4 @@
-import React from 'react';
+import { Link } from 'react-router-dom';
 import { Logo } from './Logo';
 
 export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -13,9 +13,9 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100 font-sans">
       <header className="bg-slate-900/80 backdrop-blur-md border-b border-slate-800 p-4 sticky top-0 z-50">
         <div className="container mx-auto flex items-center justify-between">
-          <div 
+          <Link 
+            to="/"
             className="flex items-center gap-2 group cursor-pointer"
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           >
             <div className="bg-primary/10 p-2 rounded-xl group-hover:bg-primary/20 transition-colors">
               <Logo className="w-6 h-6" />
@@ -23,7 +23,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
             <h1 className="text-xl font-bold tracking-tight text-white">
               Chain<span className="text-primary">Pulse</span>
             </h1>
-          </div>
+          </Link>
           <nav className="hidden md:flex gap-4 lg:gap-8">
             {[
               { label: 'Dashboard', id: 'dashboard' },
