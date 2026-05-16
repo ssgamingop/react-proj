@@ -6,6 +6,7 @@ A high-performance, real-time financial dashboard designed to monitor cryptocurr
 
 ## ✨ Key Features
 
+- 🚀 **Cinematic Landing Page**: High-impact entry point with premium animations, glassmorphism, and hero visuals.
 - 📊 **Real-time Market Overview**: Track the top 100 cryptocurrencies by market cap with live price updates and volatility indicators.
 - 💼 **Professional Portfolio Tracker**: Simulate investments with a mock portfolio. Includes real-time balance tracking, average buy price analysis, and P/L calculations.
 - ⭐ **Favorites Watchlist**: Curate a personalized list of assets for quick access and real-time monitoring.
