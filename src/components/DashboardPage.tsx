@@ -1,3 +1,4 @@
+import React from 'react';
 import { TerminalLayout } from './TerminalLayout';
 import { MarketTable } from './MarketTable';
 import { NewsWidget } from './NewsWidget';
@@ -5,7 +6,19 @@ import { WatchlistWidget } from './WatchlistWidget';
 import { PriceChart } from './PriceChart';
 import { AlertsWidget } from './AlertsWidget';
 
+const AVAILABLE_SYMBOLS = ['BTC', 'ETH', 'SOL', 'BNB', 'ADA', 'XRP', 'DOGE'];
+
 export const DashboardPage = () => {
+  const [selectedSymbols, setSelectedSymbols] = React.useState(['BTC', 'ETH', 'SOL']);
+
+  const toggleSymbol = React.useCallback((symbol: string) => {
+    setSelectedSymbols(prev => 
+      prev.includes(symbol) 
+        ? (prev.length > 1 ? prev.filter(s => s !== symbol) : prev) 
+        : [...prev, symbol]
+    );
+  }, []);
+
   return (
     <TerminalLayout>
       <div className="flex flex-col gap-6 max-w-[1600px] mx-auto h-full animate-in fade-in duration-500">
@@ -67,8 +80,24 @@ export const DashboardPage = () => {
         {/* Main Split Row: Chart + News */}
         <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 min-h-[450px]">
           {/* Main Chart Area */}
-          <div className="xl:col-span-8 flex flex-col">
-            <PriceChart symbol="BTC" />
+          <div className="xl:col-span-8 flex flex-col gap-4">
+            <div className="flex flex-wrap gap-2 items-center bg-white/50 dark:bg-black/10 p-3 rounded-2xl border border-slate-200 dark:border-slate-800/60 backdrop-blur-sm">
+              <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 mr-2 ml-1">Asset Comparison:</span>
+              {AVAILABLE_SYMBOLS.map(symbol => (
+                <button
+                  key={symbol}
+                  onClick={() => toggleSymbol(symbol)}
+                  className={`px-3 py-1.5 rounded-xl text-[11px] font-black transition-all border ${
+                    selectedSymbols.includes(symbol)
+                      ? 'bg-primary/10 border-primary/50 text-primary dark:text-white dark:bg-primary/20 shadow-[0_0_15px_rgba(99,102,241,0.1)]'
+                      : 'bg-white dark:bg-white/5 border-slate-200 dark:border-slate-800/80 text-slate-500 hover:border-slate-300 dark:hover:border-slate-700'
+                  }`}
+                >
+                  {symbol}
+                </button>
+              ))}
+            </div>
+            <PriceChart symbols={selectedSymbols} />
           </div>
           
           {/* Right Sidebar Area */}
